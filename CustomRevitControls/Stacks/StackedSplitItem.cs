@@ -42,7 +42,7 @@ namespace CustomRevitControls
     ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class StackedSplitItem : Control, IStackItem, IRibbonBase
+    public class StackedSplitItem : RevitControl, IStackItem
     {
         public static DependencyProperty ContentProperty;
         public static DependencyProperty ItemsProperty;
@@ -50,14 +50,16 @@ namespace CustomRevitControls
         public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
 
-
-        public string ControlName => GetType().Name;
-        public object Content
+        public override bool HasElements => true;
+        public override string ControlName => GetType().Name;
+        public override ImageSource MainIcon { get ; set; }
+        public override bool IsSelected { get; set; }
+        public override object Content
         {
             get { return base.GetValue(ContentProperty); }
             set { base.SetValue(ContentProperty, value); }
         }
-        public IEnumerable Items
+        public override IEnumerable Items
         {
             get { return (IEnumerable)base.GetValue(ItemsProperty); }
             set { base.SetValue(ItemsProperty, value); }
@@ -72,15 +74,11 @@ namespace CustomRevitControls
             get { return (object)base.GetValue(CommandParameterProperty); }
             set { base.SetValue(CommandParameterProperty, value); }
         }
-
         public double CalculatedWidth
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
             set { base.SetValue(CalculatedWidthProperty, value); }
         }
-
-        public ImageSource MainIcon { get ; set; }
-        public bool IsSelected { get; set; }
 
         static StackedSplitItem()
         {
@@ -103,7 +101,7 @@ namespace CustomRevitControls
             foreach (SplitButtonItem item in Items)
             {
                 SizeF stringSize = new SizeF();
-                stringSize = gr.MeasureString(item.Text, stringFont);
+                stringSize = gr.MeasureString((string)item.Content, stringFont);
                 if (maxItemWidth < stringSize.Width)
                     maxItemWidth = stringSize.Width;
 

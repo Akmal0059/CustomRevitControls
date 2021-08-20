@@ -207,6 +207,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
 
     <Style TargetType="{x:Type local:StackedPulldown}">
         <Setter Property="Template">
@@ -355,4 +356,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
 </ResourceDictionary>

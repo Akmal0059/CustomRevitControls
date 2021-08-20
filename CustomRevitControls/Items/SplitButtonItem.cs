@@ -1,22 +1,28 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CustomRevitControls
 {
-    public class SplitButtonItem
+    public class SplitButtonItem : RevitControl
     {
-        public string IconPath { get; }
-        public string Text { get; }
+        public override string ControlName => GetType().Name;
+        public override bool IsSelected { get; set; }
+        public override object Content { get; set; }
+        public override ImageSource MainIcon { get; set; }
+        public override bool HasElements => false;
+        public override IEnumerable Items { get; set; }
 
-        public SplitButtonItem(string text, string iconPath)
+        public SplitButtonItem(object text, string iconPath)
         {
-            Text = text;
-            IconPath = iconPath;
+            Content = text;
+            MainIcon = GetImageSource(iconPath);
         }
     }
 }

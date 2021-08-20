@@ -40,7 +40,7 @@ namespace CustomRevitControls
     ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class RegularButton : Control, IRibbonBase
+    public class RegularButton : RevitControl
     {
         public static DependencyProperty ContentProperty;
         public static DependencyProperty ItemsProperty;
@@ -48,13 +48,15 @@ namespace CustomRevitControls
         public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty MainIconProperty;
 
-        public string ControlName => GetType().Name;
-        public object Content
+        public override bool HasElements => false;
+        public override string ControlName => GetType().Name;
+        public override bool IsSelected { get; set; }
+        public override object Content
         {
             get { return base.GetValue(ContentProperty); }
             set { base.SetValue(ContentProperty, value); }
         }
-        public IEnumerable Items
+        public override IEnumerable Items
         {
             get { return (IEnumerable)base.GetValue(ItemsProperty); }
             set { base.SetValue(ItemsProperty, value); }
@@ -69,12 +71,11 @@ namespace CustomRevitControls
             get { return (object)base.GetValue(CommandParameterProperty); }
             set { base.SetValue(CommandParameterProperty, value); }
         }
-        public ImageSource MainIcon
+        public override ImageSource MainIcon
         {
             get { return (ImageSource)base.GetValue(MainIconProperty); }
             set { base.SetValue(MainIconProperty, value); }
         }
-        public bool IsSelected { get; set; }
 
         static RegularButton()
         {

@@ -55,8 +55,7 @@
     </Compile>
     <Compile Include="DropdownCommand.cs" />
     <Compile Include="HalfConverter.cs" />
-    <Compile Include="Items\IStackItem.cs" />
-    <Compile Include="Items\StackItem.cs" />
+    <Compile Include="Stacks\IStackItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -74,7 +73,7 @@
     <Compile Include="ControlsContex.cs" />
     <Compile Include="Items\PulldownItem.cs" />
     <Compile Include="Items\SplitButtonItem.cs" />
-    <Compile Include="IRibbonBase.cs" />
+    <Compile Include="Abstracts\RevitControl.cs" />
     <Compile Include="RegularButton.cs" />
     <Compile Include="SplitItem.cs" />
     <Compile Include="Stacks\StackButton.cs" />

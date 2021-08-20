@@ -40,20 +40,24 @@ namespace CustomRevitControls
     ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class StackButton : Control, IRibbonBase
+    public class StackButton : RevitControl
     {
         public static DependencyProperty ContentProperty;
         public static DependencyProperty ItemsProperty;
         public static DependencyProperty CommandProperty;
         public static DependencyProperty CommandParameterProperty;
 
-        public string ControlName => GetType().Name;
-        public object Content
+
+        public override string ControlName => GetType().Name;
+        public override bool HasElements => true;
+        public override ImageSource MainIcon { get; set; }
+        public override bool IsSelected { get; set; }
+        public override object Content
         {
             get { return base.GetValue(ContentProperty); }
             set { base.SetValue(ContentProperty, value); }
         }
-        public IEnumerable Items
+        public override IEnumerable Items
         {
             get { return (IEnumerable)base.GetValue(ItemsProperty); }
             set { base.SetValue(ItemsProperty, value); }
@@ -68,9 +72,6 @@ namespace CustomRevitControls
             get { return (object)base.GetValue(CommandParameterProperty); }
             set { base.SetValue(CommandParameterProperty, value); }
         }
-
-        public ImageSource MainIcon { get; set; }
-        public bool IsSelected { get; set; }
 
         static StackButton()
         {
