@@ -51,23 +51,40 @@
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}">
                         </Border>
-                        <Border x:Name="downBtn">
-                            <!--<Border.CommandParameter>
+                        <Button x:Name="downBtn"
+                                Command="{Binding DropdownCommand}">
+                            <Button.CommandParameter>
                                 <MultiBinding Converter="{StaticResource MultiParam}">
                                     <Binding Path="Items" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     <Binding ElementName="downBtn"/>
                                 </MultiBinding>
-                            </Border.CommandParameter>-->
-                            <Border.InputBindings>
-                                <MouseBinding Command="{Binding DropdownCommand}" MouseAction="LeftClick">
-                                    <MouseBinding.CommandParameter>
-                                        <MultiBinding Converter="{StaticResource MultiParam}">
-                                            <Binding Path="Items" RelativeSource="{RelativeSource TemplatedParent}"/>
-                                            <Binding ElementName="downBtn"/>
-                                        </MultiBinding>
-                                    </MouseBinding.CommandParameter>
-                                </MouseBinding>
-                            </Border.InputBindings>
+                            </Button.CommandParameter>
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border x:Name="Btn_Border"
+                                                        Background="Transparent">
+                                                    <ContentPresenter/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="Btn_Border" Property="Background" Value="#cae9f8"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderBrush" Value="#0261bf"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderThickness" Value="1"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsPressed" Value="true">
+                                                        <Setter TargetName="Btn_Border" Property="Background" Value="#b7d6f2"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderBrush" Value="#0261bf"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderThickness" Value="1"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
                             <StackPanel>
                                 <Image Source="{TemplateBinding MainIcon}" 
                                        Width="50" Height="50"/>
@@ -75,10 +92,9 @@
                                            HorizontalAlignment="Center"
                                            Margin="0,4,0,4" FontSize="14"/>
                                 <Path Fill="Black" Data="M7,10L12,15L17,10H7Z" HorizontalAlignment="Center"
-                                  Height="5" Width="7" Stretch="Fill"/>
+                                      Height="5" Width="7" Stretch="Fill"/>
                             </StackPanel>
-
-                        </Border>
+                        </Button>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

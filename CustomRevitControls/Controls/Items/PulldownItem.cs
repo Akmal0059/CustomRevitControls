@@ -15,12 +15,9 @@ namespace CustomRevitControls
 {
     public class PulldownItem : RevitControl
     {
+
         public override string ControlName => GetType().Name;
-        public override bool IsSelected { get; set; }
-        public override object Content { get; set; }
-        public override ImageSource MainIcon { get; set; }
         public override bool HasElements => false;
-        public override IEnumerable Items { get; set; }
 
         public PulldownItem(object text, string iconPath)
         {

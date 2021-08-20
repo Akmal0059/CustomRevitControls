@@ -1,13 +1,15 @@
-﻿using System;
+﻿using CustomRevitControls.Items;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace CustomRevitControls
 {
@@ -18,14 +20,14 @@ namespace CustomRevitControls
     /// Add this XmlNamespace attribute to the root element of the markup file where it is 
     /// to be used:
     ///
-    ///     xmlns:MyNamespace="clr-namespace:CustomRevitControls"
+    ///     xmlns:MyNamespace="clr-namespace:CustomControls"
     ///
     ///
     /// Step 1b) Using this custom control in a XAML file that exists in a different project.
     /// Add this XmlNamespace attribute to the root element of the markup file where it is 
     /// to be used:
     ///
-    ///     xmlns:MyNamespace="clr-namespace:CustomRevitControls;assembly=CustomRevitControls"
+    ///     xmlns:MyNamespace="clr-namespace:CustomControls;assembly=CustomControls"
     ///
     /// You will also need to add a project reference from the project where the XAML file lives
     /// to this project and Rebuild to avoid compilation errors:
@@ -40,27 +42,14 @@ namespace CustomRevitControls
     ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class RegularButton : RevitControl
+    public class TextBoxItem : RevitControl
     {
-        public static DependencyProperty ContentProperty;
-        public static DependencyProperty ItemsProperty;
         public static DependencyProperty CommandProperty;
         public static DependencyProperty CommandParameterProperty;
-        public static DependencyProperty MainIconProperty;
+        public static DependencyProperty TextBoxWidthProperty;
 
-        public override bool HasElements => false;
         public override string ControlName => GetType().Name;
-        public override bool IsSelected { get; set; }
-        public override object Content
-        {
-            get { return base.GetValue(ContentProperty); }
-            set { base.SetValue(ContentProperty, value); }
-        }
-        public override IEnumerable Items
-        {
-            get { return (IEnumerable)base.GetValue(ItemsProperty); }
-            set { base.SetValue(ItemsProperty, value); }
-        }
+        public override bool HasElements => false;
         public ICommand Command
         {
             get { return (ICommand)base.GetValue(CommandProperty); }
@@ -71,20 +60,19 @@ namespace CustomRevitControls
             get { return (object)base.GetValue(CommandParameterProperty); }
             set { base.SetValue(CommandParameterProperty, value); }
         }
-        public override ImageSource MainIcon
+        public double TextBoxWidth
         {
-            get { return (ImageSource)base.GetValue(MainIconProperty); }
-            set { base.SetValue(MainIconProperty, value); }
+            get { return (double)base.GetValue(TextBoxWidthProperty); }
+            set { base.SetValue(TextBoxWidthProperty, value); }
         }
 
-        static RegularButton()
+        static TextBoxItem()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(RegularButton), new FrameworkPropertyMetadata(typeof(RegularButton)));
-            ContentProperty = DependencyProperty.Register("Content", typeof(object), typeof(RegularButton));
-            ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable), typeof(RegularButton));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(RegularButton));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(RegularButton));
-            MainIconProperty = DependencyProperty.Register("MainIcon", typeof(ImageSource), typeof(RegularButton));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBoxItem), new FrameworkPropertyMetadata(typeof(TextBoxItem)));
+            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(TextBoxItem));
+            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(TextBoxItem));
+            TextBoxWidthProperty = DependencyProperty.Register("TextBoxWidth", typeof(double), typeof(TextBoxItem));
+
         }
     }
 }

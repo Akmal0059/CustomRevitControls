@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows;
 using CustomRevitControls.Items;
 using System.Drawing;
-using System.Windows.Media;
 
 namespace CustomRevitControls
 {
@@ -20,14 +20,14 @@ namespace CustomRevitControls
     /// Add this XmlNamespace attribute to the root element of the markup file where it is 
     /// to be used:
     ///
-    ///     xmlns:MyNamespace="clr-namespace:CustomControls"
+    ///     xmlns:MyNamespace="clr-namespace:CustomRevitControls"
     ///
     ///
     /// Step 1b) Using this custom control in a XAML file that exists in a different project.
     /// Add this XmlNamespace attribute to the root element of the markup file where it is 
     /// to be used:
     ///
-    ///     xmlns:MyNamespace="clr-namespace:CustomControls;assembly=CustomControls"
+    ///     xmlns:MyNamespace="clr-namespace:CustomRevitControls;assembly=CustomRevitControls"
     ///
     /// You will also need to add a project reference from the project where the XAML file lives
     /// to this project and Rebuild to avoid compilation errors:
@@ -39,31 +39,18 @@ namespace CustomRevitControls
     /// Step 2)
     /// Go ahead and use your control in the XAML file.
     ///
-    ///     <MyNamespace:SplitItem/>
+    ///     <MyNamespace:PulldownButton/>
     ///
     /// </summary>
-    public class StackedSplitItem : RevitControl, IStackItem
+    public class StackItem : RevitControl, IStackItem
     {
-        public static DependencyProperty ContentProperty;
-        public static DependencyProperty ItemsProperty;
         public static DependencyProperty CommandProperty;
         public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
 
-        public override bool HasElements => true;
+
+        public override bool HasElements => false;
         public override string ControlName => GetType().Name;
-        public override ImageSource MainIcon { get ; set; }
-        public override bool IsSelected { get; set; }
-        public override object Content
-        {
-            get { return base.GetValue(ContentProperty); }
-            set { base.SetValue(ContentProperty, value); }
-        }
-        public override IEnumerable Items
-        {
-            get { return (IEnumerable)base.GetValue(ItemsProperty); }
-            set { base.SetValue(ItemsProperty, value); }
-        }
         public ICommand Command
         {
             get { return (ICommand)base.GetValue(CommandProperty); }
@@ -74,39 +61,30 @@ namespace CustomRevitControls
             get { return (object)base.GetValue(CommandParameterProperty); }
             set { base.SetValue(CommandParameterProperty, value); }
         }
-        public double CalculatedWidth
+        public double CalculatedWidth 
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
             set { base.SetValue(CalculatedWidthProperty, value); }
         }
 
-        static StackedSplitItem()
+        static StackItem()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedSplitItem), new FrameworkPropertyMetadata(typeof(StackedSplitItem)));
-            ContentProperty = DependencyProperty.Register("Content", typeof(object), typeof(StackedSplitItem));
-            ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable), typeof(StackedSplitItem));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedSplitItem));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedSplitItem));
-            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedSplitItem));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StackItem), new FrameworkPropertyMetadata(typeof(StackItem)));
+            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackItem));
+            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackItem));
+            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackItem));
         }
 
         public void CalculateWidth()
         {
             CalculatedWidth = 25 + 8;// icon + margin
             Font stringFont = new Font("Segoe UI", 16);
-            Graphics gr = Graphics.FromImage(new Bitmap(1, 1));
 
             // Measure string.
-            double maxItemWidth = 0;
-            foreach (SplitButtonItem item in Items)
-            {
-                SizeF stringSize = new SizeF();
-                stringSize = gr.MeasureString((string)item.Content, stringFont);
-                if (maxItemWidth < stringSize.Width)
-                    maxItemWidth = stringSize.Width;
-
-            }
-            CalculatedWidth += maxItemWidth;
+            SizeF stringSize = new SizeF();
+            Graphics gr = Graphics.FromImage(new Bitmap(1, 1));
+            stringSize = gr.MeasureString((string)Content, stringFont);
+            CalculatedWidth += stringSize.Width;
         }
     }
 }

@@ -55,7 +55,7 @@
     </Compile>
     <Compile Include="DropdownCommand.cs" />
     <Compile Include="HalfConverter.cs" />
-    <Compile Include="Stacks\IStackItem.cs" />
+    <Compile Include="Controls\Stacks\IStackItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -69,18 +69,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="PulldownButton.cs" />
-    <Compile Include="ControlsContex.cs" />
-    <Compile Include="Items\PulldownItem.cs" />
-    <Compile Include="Items\SplitButtonItem.cs" />
+    <Compile Include="Controls\PulldownButton.cs" />
+    <Compile Include="ControlsContext.cs" />
+    <Compile Include="Controls\Items\PulldownItem.cs" />
+    <Compile Include="Controls\Items\SplitButtonItem.cs" />
     <Compile Include="Abstracts\RevitControl.cs" />
-    <Compile Include="RegularButton.cs" />
-    <Compile Include="SplitItem.cs" />
-    <Compile Include="Stacks\StackButton.cs" />
-    <Compile Include="Stacks\StackedPulldown.cs" />
-    <Compile Include="Stacks\StackedSplitItem.cs" />
-    <Compile Include="Stacks\StackItem.cs" />
-    <Compile Include="TextBoxItem.cs" />
+    <Compile Include="Controls\RegularButton.cs" />
+    <Compile Include="Controls\SplitItem.cs" />
+    <Compile Include="Controls\Stacks\StackButton.cs" />
+    <Compile Include="Controls\Stacks\StackedPulldown.cs" />
+    <Compile Include="Controls\Stacks\StackedSplitItem.cs" />
+    <Compile Include="Controls\Stacks\StackItem.cs" />
+    <Compile Include="Controls\TextBoxItem.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

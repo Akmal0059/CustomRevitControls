@@ -42,42 +42,15 @@ namespace CustomRevitControls
     /// </summary>
     public class StackButton : RevitControl
     {
-        public static DependencyProperty ContentProperty;
-        public static DependencyProperty ItemsProperty;
         public static DependencyProperty CommandProperty;
         public static DependencyProperty CommandParameterProperty;
 
-
         public override string ControlName => GetType().Name;
         public override bool HasElements => true;
-        public override ImageSource MainIcon { get; set; }
-        public override bool IsSelected { get; set; }
-        public override object Content
-        {
-            get { return base.GetValue(ContentProperty); }
-            set { base.SetValue(ContentProperty, value); }
-        }
-        public override IEnumerable Items
-        {
-            get { return (IEnumerable)base.GetValue(ItemsProperty); }
-            set { base.SetValue(ItemsProperty, value); }
-        }
-        public ICommand Command
-        {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return (object)base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
-        }
 
         static StackButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackButton), new FrameworkPropertyMetadata(typeof(StackButton)));
-            ContentProperty = DependencyProperty.Register("Content", typeof(object), typeof(StackButton));
-            ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable), typeof(StackButton));
             CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackButton));
             CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackButton));
         }

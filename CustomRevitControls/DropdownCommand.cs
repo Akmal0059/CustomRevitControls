@@ -21,10 +21,6 @@ namespace CustomRevitControls
 
         public void Execute(object parameter)
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl))
-            {
-                return;
-            }
             IEnumerable items = (IEnumerable)(parameter as object[])[0];
             FrameworkElement btn = (FrameworkElement)(parameter as object[])[1];
             //Window win = (Window)(parameter as object[])[1];
