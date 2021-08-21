@@ -82,7 +82,7 @@ namespace CustomRevitControls
 
             // Measure string.
             double maxItemWidth = 0;
-            foreach (SplitButtonItem item in Items)
+            foreach (RevitControl item in Items)
             {
                 SizeF stringSize = new SizeF();
                 stringSize = gr.MeasureString((string)item.Content, stringFont);

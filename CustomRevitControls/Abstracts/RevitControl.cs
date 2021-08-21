@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -32,9 +33,9 @@ namespace CustomRevitControls
             get { return (ImageSource)base.GetValue(MainIconProperty); }
             set { base.SetValue(MainIconProperty, value); }
         }
-        public IEnumerable Items
+        public List<RevitControl> Items
         {
-            get { return (IEnumerable)base.GetValue(ItemsProperty); }
+            get { return (List<RevitControl>)base.GetValue(ItemsProperty); }
             set { base.SetValue(ItemsProperty, value); }
         }
 
@@ -42,7 +43,7 @@ namespace CustomRevitControls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RevitControl), new FrameworkPropertyMetadata(typeof(RevitControl)));
             ContentProperty = DependencyProperty.Register("Content", typeof(object), typeof(RevitControl));
-            ItemsProperty = DependencyProperty.Register("Items", typeof(IEnumerable), typeof(RevitControl));
+            ItemsProperty = DependencyProperty.Register("Items", typeof(List<RevitControl>), typeof(RevitControl));
             //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(RevitControl));
             //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(RevitControl));
             MainIconProperty = DependencyProperty.Register("MainIcon", typeof(ImageSource), typeof(RevitControl));

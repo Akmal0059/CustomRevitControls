@@ -75,6 +75,15 @@ namespace CustomRevitControls
             CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackItem));
         }
 
+        public StackItem(object content)
+        {
+            Content = content;
+        }
+        public StackItem()
+        {
+
+        }
+
         public void CalculateWidth()
         {
             CalculatedWidth = 25 + 8;// icon + margin

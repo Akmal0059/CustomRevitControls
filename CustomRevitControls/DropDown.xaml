@@ -11,8 +11,8 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Height="40" Width="40" Margin="5" Source="{Binding IconPath}"/>
-                        <TextBlock Text="{Binding Text}" FontSize="16" VerticalAlignment="Center"/>
+                        <Image Height="40" Width="40" Margin="5" Source="{Binding MainIcon}"/>
+                        <TextBlock Text="{Binding Content}" FontSize="16" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

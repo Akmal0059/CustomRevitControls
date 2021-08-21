@@ -42,7 +42,7 @@ namespace CustomRevitControls
         public static DependencyProperty CurrentIndexProperty;
         
         public override string ControlName => GetType().Name;
-        public override bool HasElements => false;
+        public override bool HasElements => true;
         public ICommand Command
         {
             get { return (ICommand)base.GetValue(CommandProperty); }
