@@ -13,12 +13,12 @@ namespace CustomRevitControls
 {
     public class ControlsContext : INotifyPropertyChanged
     {
-        SplitButtonItem current;
+        StackedRegularButton current;
 
         public object CurrentIndex { get; set; }
         public IEnumerable<SplitButtonItem> SplitItems { get; set; }
         public ICommand DropdownCommand { get; }
-        public SplitButtonItem CurrentSplit
+        public StackedRegularButton CurrentSplit
         {
             get => current;
             set

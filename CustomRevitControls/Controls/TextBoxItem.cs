@@ -44,22 +44,22 @@ namespace CustomRevitControls
     /// </summary>
     public class TextBoxItem : RevitControl
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        //public static DependencyProperty CommandProperty;
+        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty TextBoxWidthProperty;
 
         public override string ControlName => GetType().Name;
         public override bool HasElements => false;
-        public ICommand Command
-        {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return (object)base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
-        }
+        //public ICommand Command
+        //{
+        //    get { return (ICommand)base.GetValue(CommandProperty); }
+        //    set { base.SetValue(CommandProperty, value); }
+        //}
+        //public object CommandParameter
+        //{
+        //    get { return (object)base.GetValue(CommandParameterProperty); }
+        //    set { base.SetValue(CommandParameterProperty, value); }
+        //}
         public double TextBoxWidth
         {
             get { return (double)base.GetValue(TextBoxWidthProperty); }
@@ -69,8 +69,8 @@ namespace CustomRevitControls
         static TextBoxItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBoxItem), new FrameworkPropertyMetadata(typeof(TextBoxItem)));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(TextBoxItem));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(TextBoxItem));
+            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(TextBoxItem));
+            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(TextBoxItem));
             TextBoxWidthProperty = DependencyProperty.Register("TextBoxWidth", typeof(double), typeof(TextBoxItem));
 
         }

@@ -44,22 +44,22 @@ namespace CustomRevitControls
     /// </summary>
     public class StackedPulldown : RevitControl, IStackItem
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        //public static DependencyProperty CommandProperty;
+        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
 
         public override string ControlName => GetType().Name;
         public override bool HasElements => true;
-        public ICommand Command
-        {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return (object)base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
-        }
+        //public ICommand Command
+        //{
+        //    get { return (ICommand)base.GetValue(CommandProperty); }
+        //    set { base.SetValue(CommandProperty, value); }
+        //}
+        //public object CommandParameter
+        //{
+        //    get { return (object)base.GetValue(CommandParameterProperty); }
+        //    set { base.SetValue(CommandParameterProperty, value); }
+        //}
         public double CalculatedWidth
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
@@ -69,8 +69,8 @@ namespace CustomRevitControls
         static StackedPulldown()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedPulldown), new FrameworkPropertyMetadata(typeof(StackedPulldown)));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedPulldown));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedPulldown));
+            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedPulldown));
+            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedPulldown));
             CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedPulldown));
         }
 

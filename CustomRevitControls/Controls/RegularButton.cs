@@ -42,27 +42,20 @@ namespace CustomRevitControls
     /// </summary>
     public class RegularButton : RevitControl
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        public static DependencyProperty CommandHandlerProperty;
 
         public override bool HasElements => false;
         public override string ControlName => GetType().Name;
-        public ICommand Command
+        public string CommandHandler
         {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return (object)base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
+            get { return (string)base.GetValue(CommandHandlerProperty); }
+            set { base.SetValue(CommandHandlerProperty, value); }
         }
 
         static RegularButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RegularButton), new FrameworkPropertyMetadata(typeof(RegularButton)));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(RegularButton));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(RegularButton));
+            CommandHandlerProperty = DependencyProperty.Register("CommandHandler", typeof(string), typeof(RegularButton));
         }
     }
 }

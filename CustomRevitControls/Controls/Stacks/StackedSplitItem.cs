@@ -44,22 +44,22 @@ namespace CustomRevitControls
     /// </summary>
     public class StackedSplitItem : RevitControl, IStackItem
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        //public static DependencyProperty CommandProperty;
+        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
 
         public override bool HasElements => true;
         public override string ControlName => GetType().Name;
-        public ICommand Command
-        {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return (object)base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
-        }
+        //public ICommand Command
+        //{
+        //    get { return (ICommand)base.GetValue(CommandProperty); }
+        //    set { base.SetValue(CommandProperty, value); }
+        //}
+        //public object CommandParameter
+        //{
+        //    get { return (object)base.GetValue(CommandParameterProperty); }
+        //    set { base.SetValue(CommandParameterProperty, value); }
+        //}
         public double CalculatedWidth
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
@@ -69,8 +69,8 @@ namespace CustomRevitControls
         static StackedSplitItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedSplitItem), new FrameworkPropertyMetadata(typeof(StackedSplitItem)));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedSplitItem));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedSplitItem));
+            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedSplitItem));
+            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedSplitItem));
             CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedSplitItem));
         }
 

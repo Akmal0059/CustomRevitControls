@@ -37,22 +37,17 @@ namespace CustomRevitControls
     /// </summary>
     public class SplitItem : RevitControl
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        //public static DependencyProperty CommandProperty;
+        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CurrentIndexProperty;
         
         public override string ControlName => GetType().Name;
         public override bool HasElements => true;
-        public ICommand Command
-        {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
-        }
+        //public ICommand Command
+        //{
+        //    get { return (ICommand)base.GetValue(CommandProperty); }
+        //    set { base.SetValue(CommandProperty, value); }
+        //}
         public object CurrentIndex
         {
             get { return base.GetValue(CurrentIndexProperty); }
@@ -63,8 +58,8 @@ namespace CustomRevitControls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitItem), new FrameworkPropertyMetadata(typeof(SplitItem)));
             CurrentIndexProperty = DependencyProperty.Register("CurrentIndex", typeof(object), typeof(SplitItem));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(SplitItem));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(SplitItem));
+            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(SplitItem));
+            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(SplitItem));
         }
     }
 }

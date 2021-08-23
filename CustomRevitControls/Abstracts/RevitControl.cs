@@ -38,6 +38,7 @@ namespace CustomRevitControls
             get { return (List<RevitControl>)base.GetValue(ItemsProperty); }
             set { base.SetValue(ItemsProperty, value); }
         }
+        public List<PropertyItem> Properties { get; set; } = new List<PropertyItem>();
 
         static RevitControl()
         {

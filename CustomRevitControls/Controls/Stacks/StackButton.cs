@@ -42,8 +42,8 @@ namespace CustomRevitControls
     /// </summary>
     public class StackButton : RevitControl
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        //public static DependencyProperty CommandProperty;
+        //public static DependencyProperty CommandParameterProperty;
 
         public override string ControlName => GetType().Name;
         public override bool HasElements => true;
@@ -51,8 +51,8 @@ namespace CustomRevitControls
         static StackButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackButton), new FrameworkPropertyMetadata(typeof(StackButton)));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackButton));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackButton));
+            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackButton));
+            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackButton));
         }
     }
 }

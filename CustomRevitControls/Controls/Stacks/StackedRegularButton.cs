@@ -42,46 +42,37 @@ namespace CustomRevitControls
     ///     <MyNamespace:PulldownButton/>
     ///
     /// </summary>
-    public class StackItem : RevitControl, IStackItem
+    public class StackedRegularButton : RevitControl, IStackItem
     {
-        public static DependencyProperty CommandProperty;
-        public static DependencyProperty CommandParameterProperty;
+        //public static DependencyProperty CommandProperty;
+        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
 
 
         public override bool HasElements => false;
         public override string ControlName => GetType().Name;
-        public ICommand Command
-        {
-            get { return (ICommand)base.GetValue(CommandProperty); }
-            set { base.SetValue(CommandProperty, value); }
-        }
-        public object CommandParameter
-        {
-            get { return (object)base.GetValue(CommandParameterProperty); }
-            set { base.SetValue(CommandParameterProperty, value); }
-        }
+        //public ICommand Command
+        //{
+        //    get { return (ICommand)base.GetValue(CommandProperty); }
+        //    set { base.SetValue(CommandProperty, value); }
+        //}
+        //public object CommandParameter
+        //{
+        //    get { return (object)base.GetValue(CommandParameterProperty); }
+        //    set { base.SetValue(CommandParameterProperty, value); }
+        //}
         public double CalculatedWidth 
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
             set { base.SetValue(CalculatedWidthProperty, value); }
         }
 
-        static StackItem()
+        static StackedRegularButton()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(StackItem), new FrameworkPropertyMetadata(typeof(StackItem)));
-            CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackItem));
-            CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackItem));
-            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackItem));
-        }
-
-        public StackItem(object content)
-        {
-            Content = content;
-        }
-        public StackItem()
-        {
-
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedRegularButton), new FrameworkPropertyMetadata(typeof(StackedRegularButton)));
+            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedRegularButton));
+            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedRegularButton));
+            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedRegularButton));
         }
 
         public void CalculateWidth()

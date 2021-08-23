@@ -37,7 +37,7 @@ namespace CustomRevitControls
 
         private void Droplist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (((ListBox)e.Source).SelectedItem is SplitButtonItem selectedSplit)
+            if (((ListBox)e.Source).SelectedItem is StackedRegularButton selectedSplit)
                 viewModel.CurrentSplit = selectedSplit;
             manualClosing = true;
             Close();
