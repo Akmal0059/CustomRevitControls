@@ -54,7 +54,7 @@
     <Compile Include="DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DropdownCommand.cs" />
+    <Compile Include="Commands\DropdownCommand.cs" />
     <Compile Include="Converters.cs" />
     <Compile Include="Controls\Interfaces\IStackItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -81,6 +81,8 @@
     <Compile Include="Controls\Stacks\StackedRegularButton.cs" />
     <Compile Include="Controls\TextBoxItem.cs" />
     <Compile Include="PropertyItem.cs" />
+    <Compile Include="Commands\ResetCommand.cs" />
+    <Compile Include="Commands\SelectImageCommand.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

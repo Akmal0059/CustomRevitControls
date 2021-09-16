@@ -1,4 +1,5 @@
-﻿using RevitAddinBase;
+﻿using CustomRevitControls.Interfaces;
+using RevitAddinBase;
 using RevitAddinBase.RevitControls;
 using System;
 using System.Collections;
@@ -76,9 +77,9 @@ namespace CustomRevitControls
         public abstract void SetProperties(ICommand command = null, List<string> commands = null);
         public void SetCommonProperties(ICommand command = null, List<string> commands = null)
         {
-            if (!(this is StackButton))
+            if (!(this is StackButton) && !(this is StackedSplitItem))
                 Properties.Add(new PropertyItem(this, "Content", new TextBox()));
-            if(!(this is StackButton) &&  !(this is SplitItem))
+            if(!(this is StackButton) &&  !(this is ISplitItem))
                 Properties.Add(new PropertyItem(this, "IconPath", new TextBox(), new Button()));
             if (HasElements)
                 Properties.Add(new PropertyItem(this, "Items", new Button(), command: command));

@@ -59,7 +59,7 @@ namespace CustomRevitControls
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-            Properties.Add(new PropertyItem(this, "SelectedIndex", new TextBox()));
+            Properties.Add(new PropertyItem(this, "SelectedIndex", new TextBox(), true, SelectedIndexProperty));
         }
         public override RibbonItemBase GetRevitRibbon()
         {

@@ -121,7 +121,7 @@
         </Setter>
     </Style>
 
-    <Style x:Name="splitItem" TargetType="{x:Type local:SplitItem}">
+    <Style TargetType="{x:Type local:SplitItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SplitItem}">
