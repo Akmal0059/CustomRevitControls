@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿using CustomRevitControls.Interfaces;
+using RevitAddinBase;
+using RevitAddinBase.RevitControls;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,31 +40,36 @@ namespace CustomRevitControls
     ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class SplitItem : RevitControl
+    public class SplitItem : RevitControl, ISplitItem
     {
-        //public static DependencyProperty CommandProperty;
-        //public static DependencyProperty CommandParameterProperty;
-        public static DependencyProperty CurrentIndexProperty;
-        
+        public static DependencyProperty SelectedIndexProperty;
         public override string ControlName => GetType().Name;
         public override bool HasElements => true;
-        //public ICommand Command
-        //{
-        //    get { return (ICommand)base.GetValue(CommandProperty); }
-        //    set { base.SetValue(CommandProperty, value); }
-        //}
-        public object CurrentIndex
+        public int? SelectedIndex
         {
-            get { return base.GetValue(CurrentIndexProperty); }
-            set { base.SetValue(CurrentIndexProperty, value); }
+            get => (int?)base.GetValue(SelectedIndexProperty);
+            set { base.SetValue(SelectedIndexProperty, value); }
         }
 
         static SplitItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitItem), new FrameworkPropertyMetadata(typeof(SplitItem)));
-            CurrentIndexProperty = DependencyProperty.Register("CurrentIndex", typeof(object), typeof(SplitItem));
-            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(SplitItem));
-            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(SplitItem));
+            SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(int?), typeof(SplitItem));
+        }
+        public override void SetProperties(ICommand command = null, List<string> commands = null)
+        {
+            SetCommonProperties(command, commands);
+            Properties.Add(new PropertyItem(this, "SelectedIndex", new TextBox()));
+        }
+        public override RibbonItemBase GetRevitRibbon()
+        {
+            SplitButton splitButton = new SplitButton();
+            splitButton.Text = (string)Content;
+            splitButton.SelectedIndex = SelectedIndex;
+            splitButton.Items = new List<RibbonItemBase>();
+            foreach (var item in Items)
+                splitButton.Items.Add(item.GetRevitRibbon());
+            return splitButton;
         }
     }
 }

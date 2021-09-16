@@ -8,8 +8,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
-using CustomRevitControls.Items;
+using CustomRevitControls.Interfaces;
 using System.Drawing;
+using RevitAddinBase;
+using RevitAddinBase.RevitControls;
 
 namespace CustomRevitControls
 {
@@ -44,22 +46,10 @@ namespace CustomRevitControls
     /// </summary>
     public class StackedPulldown : RevitControl, IStackItem
     {
-        //public static DependencyProperty CommandProperty;
-        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
 
         public override string ControlName => GetType().Name;
         public override bool HasElements => true;
-        //public ICommand Command
-        //{
-        //    get { return (ICommand)base.GetValue(CommandProperty); }
-        //    set { base.SetValue(CommandProperty, value); }
-        //}
-        //public object CommandParameter
-        //{
-        //    get { return (object)base.GetValue(CommandParameterProperty); }
-        //    set { base.SetValue(CommandParameterProperty, value); }
-        //}
         public double CalculatedWidth
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
@@ -69,8 +59,6 @@ namespace CustomRevitControls
         static StackedPulldown()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedPulldown), new FrameworkPropertyMetadata(typeof(StackedPulldown)));
-            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedPulldown));
-            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedPulldown));
             CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedPulldown));
         }
 
@@ -84,6 +72,21 @@ namespace CustomRevitControls
             Graphics gr = Graphics.FromImage(new Bitmap(1, 1));
             stringSize = gr.MeasureString((string)Content, stringFont);
             CalculatedWidth += stringSize.Width;
+        }
+
+        public override void SetProperties(ICommand command = null, List<string> commands = null)
+        {
+            SetCommonProperties(command, commands);
+        }
+
+        public override RibbonItemBase GetRevitRibbon()
+        {
+            PullButton pullButton = new PullButton();
+            pullButton.Text = (string)Content;
+            pullButton.Items = new List<RibbonItemBase>();
+            foreach (var item in Items)
+                pullButton.Items.Add(item.GetRevitRibbon());
+            return pullButton;
         }
     }
 }

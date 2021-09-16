@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Controls;
+using RevitAddinBase;
+using RevitAddinBase.RevitControls;
 
 namespace CustomRevitControls
 {
@@ -56,6 +58,19 @@ namespace CustomRevitControls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RegularButton), new FrameworkPropertyMetadata(typeof(RegularButton)));
             CommandHandlerProperty = DependencyProperty.Register("CommandHandler", typeof(string), typeof(RegularButton));
+        }
+        public override void SetProperties(ICommand command = null, List<string> commands = null)
+        {
+            SetCommonProperties(command, commands);
+        }
+
+        public override RibbonItemBase GetRevitRibbon()
+        {
+            PushButton pb = new PushButton();
+            pb.Text = (string)Content;
+            pb.IconPath = IconPath;
+
+            return pb;
         }
     }
 }

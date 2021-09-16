@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CustomRevitControls.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,11 +20,11 @@ namespace CustomRevitControls
     /// </summary>
     public partial class Dropdown : Window
     {
-        ControlsContext viewModel;
+        RevitControl currentControl;
         bool manualClosing = false;
-        public Dropdown(ControlsContext viewModel)
+        public Dropdown(RevitControl currentControl)
         {
-            this.viewModel = viewModel;
+            this.currentControl = currentControl;
             InitializeComponent();
         }
         protected override void OnDeactivated(EventArgs e)
@@ -37,8 +38,14 @@ namespace CustomRevitControls
 
         private void Droplist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (((ListBox)e.Source).SelectedItem is StackedRegularButton selectedSplit)
-                viewModel.CurrentSplit = selectedSplit;
+            if(currentControl is ISplitItem splitItem)
+            {
+                if (splitItem.SelectedIndex == null)
+                {
+                    if (((ListBox)e.Source).SelectedItem is StackedRegularButton selectedSplit)
+                        (currentControl.DataContext as ControlsContext).CurrentItem = selectedSplit;
+                }
+            }
             manualClosing = true;
             Close();
         }

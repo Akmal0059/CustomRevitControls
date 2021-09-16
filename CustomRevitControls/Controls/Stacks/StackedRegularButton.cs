@@ -8,8 +8,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows;
-using CustomRevitControls.Items;
+using CustomRevitControls.Interfaces;
 using System.Drawing;
+using RevitAddinBase;
+using RevitAddinBase.RevitControls;
 
 namespace CustomRevitControls
 {
@@ -44,34 +46,18 @@ namespace CustomRevitControls
     /// </summary>
     public class StackedRegularButton : RevitControl, IStackItem
     {
-        //public static DependencyProperty CommandProperty;
-        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
-
 
         public override bool HasElements => false;
         public override string ControlName => GetType().Name;
-        //public ICommand Command
-        //{
-        //    get { return (ICommand)base.GetValue(CommandProperty); }
-        //    set { base.SetValue(CommandProperty, value); }
-        //}
-        //public object CommandParameter
-        //{
-        //    get { return (object)base.GetValue(CommandParameterProperty); }
-        //    set { base.SetValue(CommandParameterProperty, value); }
-        //}
         public double CalculatedWidth 
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
             set { base.SetValue(CalculatedWidthProperty, value); }
         }
-
         static StackedRegularButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedRegularButton), new FrameworkPropertyMetadata(typeof(StackedRegularButton)));
-            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedRegularButton));
-            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedRegularButton));
             CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedRegularButton));
         }
 
@@ -85,6 +71,20 @@ namespace CustomRevitControls
             Graphics gr = Graphics.FromImage(new Bitmap(1, 1));
             stringSize = gr.MeasureString((string)Content, stringFont);
             CalculatedWidth += stringSize.Width;
+        }
+
+        public override void SetProperties(ICommand command = null, List<string> commands = null)
+        {
+            SetCommonProperties(command, commands);
+        }
+
+        public override RibbonItemBase GetRevitRibbon()
+        {
+            PushButton pushButton = new PushButton();
+            pushButton.Text = (string)Content;
+            pushButton.IconPath = IconPath;
+            
+            return pushButton;
         }
     }
 }

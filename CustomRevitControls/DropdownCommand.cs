@@ -21,14 +21,19 @@ namespace CustomRevitControls
 
         public void Execute(object parameter)
         {
-            IEnumerable items = (IEnumerable)(parameter as object[])[0];
-            FrameworkElement btn = (FrameworkElement)(parameter as object[])[1];
+            var paramArray = parameter as object[];
+            IEnumerable items = (IEnumerable)paramArray[0];
+            FrameworkElement btn = (FrameworkElement)paramArray[1];
+            RevitControl SplitItem = null;
+            if (paramArray.Length == 3)
+                SplitItem = (RevitControl)paramArray[2];
+
             //Window win = (Window)(parameter as object[])[1];
             Window win = Window.GetWindow(btn);
 
             Point startPoint = btn.TranslatePoint(new Point(0, 0), win);//.TransformToAncestor(win).Transform(new Point(0, 0));
             var p = win.PointToScreen(startPoint);
-            Dropdown ui = new Dropdown(viewModel);
+            Dropdown ui = new Dropdown(SplitItem);
             ui.Droplist.ItemsSource = items;
             ui.WindowStartupLocation = WindowStartupLocation.Manual;
             ui.Left = p.X;

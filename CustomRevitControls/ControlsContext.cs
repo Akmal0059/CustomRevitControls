@@ -13,24 +13,22 @@ namespace CustomRevitControls
 {
     public class ControlsContext : INotifyPropertyChanged
     {
-        StackedRegularButton current;
+        RevitControl currentItem;
 
-        public object CurrentIndex { get; set; }
-        public IEnumerable<SplitButtonItem> SplitItems { get; set; }
+        public RevitControl Control { get; set; }
         public ICommand DropdownCommand { get; }
-        public StackedRegularButton CurrentSplit
+        public RevitControl CurrentItem 
         {
-            get => current;
+            get => currentItem;
             set
             {
-                current = value;
+                currentItem = value;
                 OnPropertyChanged();
             }
         }
 
         public ControlsContext()
         {
-            //CurrentSplit = SplitItems.First();
             DropdownCommand = new DropdownCommand(this);
         }
 

@@ -15,9 +15,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:RegularButton}">
                     <Grid Height="90" Width="90">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Border Name="border" Grid.RowSpan="2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -51,7 +48,7 @@
                                 </Style>
                             </Button.Style>
                             <StackPanel>
-                                <Image Source="{TemplateBinding MainIcon}" 
+                                <Image Source="{TemplateBinding Icon}" 
                                        Width="50" Height="50"/>
                                 <TextBlock Text="{TemplateBinding Content}" 
                                            HorizontalAlignment="Center"
@@ -69,9 +66,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PulldownButton}">
                     <Grid Height="90" Width="90">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Border Name="border" Grid.RowSpan="2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -112,7 +106,7 @@
                                 </Style>
                             </Button.Style>
                             <StackPanel>
-                                <Image Source="{TemplateBinding MainIcon}" 
+                                <Image Source="{TemplateBinding Icon}" 
                                        Width="50" Height="50"/>
                                 <TextBlock Text="{TemplateBinding Content}" 
                                            HorizontalAlignment="Center"
@@ -127,17 +121,11 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type local:SplitItem}">
-        <Setter Property="CurrentIndex" Value="{Binding CurrentIndex}"/>
-        <Setter Property="Items" Value="{Binding SplitItems}"/>
-
+    <Style x:Name="splitItem" TargetType="{x:Type local:SplitItem}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:SplitItem}">
                     <Grid Height="90" Width="90">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="3*"/>
                             <RowDefinition Height="2*"/>
@@ -152,9 +140,10 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="Button">
-                                                <Border x:Name="Btn_Border"
-                                                        Background="Transparent">
-                                                    <Image Source="{Binding CurrentSplit.MainIcon}" 
+                                                <Border x:Name="Btn_Border" Background="Transparent">
+                                                    <!--<Image Source="{Binding CurrentItem.Icon}" 
+                                                           Width="50" Height="50"/>-->
+                                                    <Image Source="{Binding CurrentItem.Icon}" 
                                                            Width="50" Height="50"/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
@@ -181,6 +170,7 @@
                                 <MultiBinding Converter="{StaticResource MultiParam}">
                                     <Binding Path="Items" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     <Binding ElementName="downBtn"/>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"/>
                                 </MultiBinding>
                             </Button.CommandParameter>
                             <Button.Style>
@@ -233,9 +223,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StackButton}">
                     <Grid x:Name="mainGrid" Height="90">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Border Name="border" Grid.RowSpan="2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="Gray"
@@ -255,15 +242,11 @@
         </Setter>
     </Style>
 
-
     <Style TargetType="{x:Type local:StackedPulldown}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StackedPulldown}">
                     <Grid Height="25" Width="{TemplateBinding CalculatedWidth}">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Border Name="border" Grid.RowSpan="2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -305,7 +288,7 @@
                                 </Style>
                             </Button.Style>
                             <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
-                                <Image Source="{TemplateBinding MainIcon}" 
+                                <Image Source="{TemplateBinding Icon}" 
                                        Width="25" Height="25"/>
                                 <TextBlock Text="{TemplateBinding Content}" 
                                            HorizontalAlignment="Center"
@@ -325,9 +308,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:StackedSplitItem}">
                     <Grid Height="25" Width="{TemplateBinding CalculatedWidth}">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="15"/>
@@ -348,9 +328,9 @@
                                                 <Border x:Name="Btn_Border"
                                                         Background="Transparent">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Image Source="{Binding CurrentSplit.MainIcon}" 
+                                                        <Image Source="{Binding CurrentItem.Icon}" 
                                                                Width="25" Height="25"/>
-                                                        <TextBlock Text="{Binding CurrentSplit.Content}"
+                                                        <TextBlock Text="{Binding CurrentItem.Content}"
                                                                    FontSize="16" Margin="4,0,4,0"/>
                                                     </StackPanel>
                                                 </Border>
@@ -378,6 +358,7 @@
                                 <MultiBinding Converter="{StaticResource MultiParam}">
                                     <Binding Path="Items" RelativeSource="{RelativeSource TemplatedParent}"/>
                                     <Binding ElementName="currBtn"/>
+                                    <Binding RelativeSource="{RelativeSource TemplatedParent}"/>
                                 </MultiBinding>
                             </Button.CommandParameter>
                             <Button.Style>
@@ -423,9 +404,6 @@
                 <ControlTemplate TargetType="{x:Type local:StackedRegularButton}">
                     <Grid Height="25"
                           Width="{TemplateBinding CalculatedWidth}">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Border Name="border" Grid.RowSpan="2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -460,7 +438,7 @@
                                 </Style>
                             </Button.Style>
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{TemplateBinding MainIcon}" 
+                                <Image Source="{TemplateBinding Icon}" 
                                        Width="25" Height="25"/>
                                 <TextBlock Text="{TemplateBinding Content}" 
                                            HorizontalAlignment="Center"
@@ -480,9 +458,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:TextBoxItem}">
                     <Grid Height="25">
-                        <Grid.DataContext>
-                            <local:ControlsContext/>
-                        </Grid.DataContext>
                         <Border Name="border" Grid.RowSpan="2"
                                 Background="{TemplateBinding Background}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
@@ -496,7 +471,7 @@
                                 HorizontalContentAlignment="Left" Height="25" Width="25"
                                 Grid.Column="1">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Source="{TemplateBinding MainIcon}"/>
+                                    <Image Source="{TemplateBinding Icon}"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>

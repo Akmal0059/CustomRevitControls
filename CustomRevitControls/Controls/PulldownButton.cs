@@ -1,4 +1,6 @@
-﻿using System;
+﻿using RevitAddinBase;
+using RevitAddinBase.RevitControls;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,27 +49,27 @@ namespace CustomRevitControls
     /// </summary>
     public class PulldownButton : RevitControl
     {
-        //public static DependencyProperty CommandProperty;
-        //public static DependencyProperty CommandParameterProperty;
-
         public override bool HasElements => true;
         public override string ControlName => GetType().Name;
-        //public ICommand Command
-        //{
-        //    get { return (ICommand)base.GetValue(CommandProperty); }
-        //    set { base.SetValue(CommandProperty, value); }
-        //}
-        //public object CommandParameter
-        //{
-        //    get { return (object)base.GetValue(CommandParameterProperty); }
-        //    set { base.SetValue(CommandParameterProperty, value); }
-        //}
 
         static PulldownButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PulldownButton), new FrameworkPropertyMetadata(typeof(PulldownButton)));
-            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(PulldownButton));
-            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(PulldownButton));
+        }
+
+        public override void SetProperties(ICommand command = null, List<string> commands = null)
+        {
+            SetCommonProperties(command, commands);
+        }
+
+        public override RibbonItemBase GetRevitRibbon()
+        {
+            PullButton pullButton = new PullButton();
+            pullButton.Text = (string)Content;
+            pullButton.Items = new List<RibbonItemBase>();
+            foreach (var item in Items)
+                pullButton.Items.Add(item.GetRevitRibbon());
+            return pullButton;
         }
     }
 }

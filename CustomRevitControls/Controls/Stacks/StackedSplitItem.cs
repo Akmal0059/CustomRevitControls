@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows;
-using CustomRevitControls.Items;
+using CustomRevitControls.Interfaces;
 using System.Drawing;
 using System.Windows.Media;
+using RevitAddinBase;
+using RevitAddinBase.RevitControls;
 
 namespace CustomRevitControls
 {
@@ -42,36 +44,35 @@ namespace CustomRevitControls
     ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class StackedSplitItem : RevitControl, IStackItem
+    public class StackedSplitItem : RevitControl, IStackItem, ISplitItem
     {
-        //public static DependencyProperty CommandProperty;
-        //public static DependencyProperty CommandParameterProperty;
         public static DependencyProperty CalculatedWidthProperty;
+        public static DependencyProperty SelectedIndexProperty;
 
         public override bool HasElements => true;
         public override string ControlName => GetType().Name;
-        //public ICommand Command
-        //{
-        //    get { return (ICommand)base.GetValue(CommandProperty); }
-        //    set { base.SetValue(CommandProperty, value); }
-        //}
-        //public object CommandParameter
-        //{
-        //    get { return (object)base.GetValue(CommandParameterProperty); }
-        //    set { base.SetValue(CommandParameterProperty, value); }
-        //}
         public double CalculatedWidth
         {
             get { return (double)base.GetValue(CalculatedWidthProperty); }
             set { base.SetValue(CalculatedWidthProperty, value); }
         }
+        public int? SelectedIndex
+        {
+            get => (int?)base.GetValue(SelectedIndexProperty);
+            set
+            {
+                if (Int32.TryParse(value.ToString(), out int index))
+                    base.SetValue(SelectedIndexProperty, index);
+                else
+                    base.SetValue(SelectedIndexProperty, null);
+            }
+        }
 
         static StackedSplitItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedSplitItem), new FrameworkPropertyMetadata(typeof(StackedSplitItem)));
-            //CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(StackedSplitItem));
-            //CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(StackedSplitItem));
             CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedSplitItem));
+            SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(int?), typeof(StackedSplitItem));
         }
 
         public void CalculateWidth()
@@ -91,6 +92,22 @@ namespace CustomRevitControls
 
             }
             CalculatedWidth += maxItemWidth;
+        }
+
+        public override void SetProperties(ICommand command = null, List<string> commands = null)
+        {
+            SetCommonProperties(command, commands);
+            Properties.Add(new PropertyItem(this, "SelectedIndex", new TextBox()));
+        }
+        public override RibbonItemBase GetRevitRibbon()
+        {
+            SplitButton splitButton = new SplitButton();
+            splitButton.Text = (string)Content;
+            splitButton.SelectedIndex = SelectedIndex;
+            splitButton.Items = new List<RibbonItemBase>();
+            foreach (var item in Items)
+                splitButton.Items.Add(item.GetRevitRibbon());
+            return splitButton;
         }
     }
 }

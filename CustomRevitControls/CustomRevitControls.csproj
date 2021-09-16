@@ -50,12 +50,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Interfaces\ISplitItem.cs" />
     <Compile Include="DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
     <Compile Include="DropdownCommand.cs" />
     <Compile Include="Converters.cs" />
-    <Compile Include="Controls\Stacks\IStackItem.cs" />
+    <Compile Include="Controls\Interfaces\IStackItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -71,8 +72,6 @@
     </Compile>
     <Compile Include="Controls\PulldownButton.cs" />
     <Compile Include="ControlsContext.cs" />
-    <Compile Include="Controls\Items\PulldownItem.cs" />
-    <Compile Include="Controls\Items\SplitButtonItem.cs" />
     <Compile Include="Abstracts\RevitControl.cs" />
     <Compile Include="Controls\RegularButton.cs" />
     <Compile Include="Controls\SplitItem.cs" />
@@ -100,6 +99,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\RevitAddinBase\RevitAddinBase\RevitAddinBase.csproj">
+      <Project>{e577b974-7b1a-4252-a97b-c79e39be5216}</Project>
+      <Name>RevitAddinBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
