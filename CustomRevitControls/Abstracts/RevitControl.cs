@@ -78,20 +78,41 @@ namespace CustomRevitControls
         public void SetCommonProperties(ICommand command = null, List<string> commands = null)
         {
             if (!(this is StackButton) && !(this is StackedSplitItem))
-                Properties.Add(new PropertyItem(this, "Content", new TextBox()));
-            if(!(this is StackButton) &&  !(this is ISplitItem))
+            {
+                TextBox multiLineTB = new TextBox();
+                multiLineTB.AcceptsReturn = true;
+                multiLineTB.TextWrapping = TextWrapping.Wrap;
+                Properties.Add(new PropertyItem(this, "Content", multiLineTB));
+            }
+            if (!(this is StackButton) && !(this is ISplitItem))
+            {
                 Properties.Add(new PropertyItem(this, "IconPath", new TextBox(), new Button()));
+            }
             if (HasElements)
+            {
                 Properties.Add(new PropertyItem(this, "Items", new Button(), command: command));
-            Properties.Add(new PropertyItem(this, "CommandName",
-                new System.Windows.Controls.ComboBox() { IsEditable = false}, commands));
+            }
+            Properties.Add(new PropertyItem(this,
+                                            "CommandName",
+                                            new System.Windows.Controls.ComboBox()
+                                            {
+                                                IsEditable = false
+                                            },
+                                            commands));
         }
 
         public static RevitControl GetRevitControl(RibbonItemBase ribbonItem, bool isStacked = false)
         {
+            if (ribbonItem is RevitAddinBase.RevitControls.Separator)
+            {
+                return new Separator();
+            }
             if (ribbonItem is Textbox tb)
             {
                 var textbox = new TextBoxItem();
+                textbox.TextBoxWidth = tb.TextboxWidth;
+                textbox.IconPath = tb.IconPath;
+                textbox.TextBoxHint = tb.HintText;
                 return textbox;
             }
             else if (ribbonItem is SplitButton sb)

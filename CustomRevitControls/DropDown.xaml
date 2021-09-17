@@ -8,11 +8,17 @@
         Title="Dropdown" Height="200" Width="180">
     <Grid>
         <ListBox x:Name="Droplist" SelectionChanged="Droplist_SelectionChanged">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Height" Value="40"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Height="40" Width="40" Margin="5" Source="{Binding Icon}"/>
-                        <TextBlock Text="{Binding Content}" FontSize="16" VerticalAlignment="Center"/>
+                        <Image Height="30" Width="30" Margin="3" Source="{Binding Icon}"/>
+                        <TextBlock Text="{Binding Content}" FontSize="14" VerticalAlignment="Center"
+                                   FontFamily="Segoe UI"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

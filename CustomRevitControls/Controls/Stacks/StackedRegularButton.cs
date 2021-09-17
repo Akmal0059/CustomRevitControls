@@ -63,7 +63,7 @@ namespace CustomRevitControls
 
         public void CalculateWidth()
         {
-            CalculatedWidth = 25 + 8;// icon + margin
+            CalculatedWidth = 23 + 8;// icon + margin
             Font stringFont = new Font("Segoe UI", 16);
 
             // Measure string.

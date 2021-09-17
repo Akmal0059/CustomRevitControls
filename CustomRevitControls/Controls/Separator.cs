@@ -1,20 +1,11 @@
-﻿using RevitAddinBase;
-using RevitAddinBase.RevitControls;
+﻿using RevitAddinBase.RevitControls;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows;
 
 namespace CustomRevitControls
 {
@@ -44,33 +35,27 @@ namespace CustomRevitControls
     /// Step 2)
     /// Go ahead and use your control in the XAML file.
     ///
-    ///     <MyNamespace:PulldownButton/>
+    ///     <MyNamespace:SplitItem/>
     ///
     /// </summary>
-    public class PulldownButton : RevitControl
+    public class Separator : RevitControl
     {
-        public override bool HasElements => true;
+
+        public override bool HasElements => false;
         public override string ControlName => GetType().Name;
 
-        static PulldownButton()
+        static Separator()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(PulldownButton), new FrameworkPropertyMetadata(typeof(PulldownButton)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Separator), new FrameworkPropertyMetadata(typeof(Separator)));
         }
-
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
-            SetCommonProperties(command, commands);
+            //SetCommonProperties(command, commands);
         }
 
         public override RibbonItemBase GetRevitRibbon()
         {
-            PullButton pullButton = new PullButton();
-            pullButton.Text = (string)Content;
-            pullButton.IconPath = IconPath;
-            pullButton.Items = new List<RibbonItemBase>();
-            foreach (var item in Items)
-                pullButton.Items.Add(item.GetRevitRibbon());
-            return pullButton;
+            return new RevitAddinBase.RevitControls.Separator();
         }
     }
 }

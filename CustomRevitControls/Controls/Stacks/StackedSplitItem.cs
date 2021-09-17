@@ -83,13 +83,23 @@ namespace CustomRevitControls
 
             // Measure string.
             double maxItemWidth = 0;
-            foreach (RevitControl item in Items)
+            if (SelectedIndex == null)
+            {
+                foreach (RevitControl item in Items)
+                {
+                    SizeF stringSize = new SizeF();
+                    stringSize = gr.MeasureString((string)item.Content, stringFont);
+                    if (maxItemWidth < stringSize.Width)
+                        maxItemWidth = stringSize.Width;
+
+                }
+            }
+            else
             {
                 SizeF stringSize = new SizeF();
-                stringSize = gr.MeasureString((string)item.Content, stringFont);
+                stringSize = gr.MeasureString((string)Items[SelectedIndex.Value].Content, stringFont);
                 if (maxItemWidth < stringSize.Width)
                     maxItemWidth = stringSize.Width;
-
             }
             CalculatedWidth += maxItemWidth;
         }

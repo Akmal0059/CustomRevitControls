@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Interfaces\ISplitItem.cs" />
+    <Compile Include="Controls\Separator.cs" />
     <Compile Include="DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
