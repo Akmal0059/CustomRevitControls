@@ -4,6 +4,7 @@ using RevitAddinBase.RevitControls;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -54,22 +55,16 @@ namespace CustomRevitControls
         static SplitItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitItem), new FrameworkPropertyMetadata(typeof(SplitItem)));
-            SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(int?), typeof(SplitItem));
+            SelectedIndexProperty = DependencyProperty.Register(nameof(SelectedIndex), typeof(int?), typeof(SplitItem));
+        }
+        protected override void AddSpecificResources(ResXResourceWriter rw)
+        {
+            rw.AddResource($"{CommandName}_SelectedIndex", SelectedIndex);
         }
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-            Properties.Add(new PropertyItem(this, "SelectedIndex", new TextBox(), true, SelectedIndexProperty));
-        }
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            SplitButton splitButton = new SplitButton();
-            splitButton.Text = (string)Content;
-            splitButton.SelectedIndex = SelectedIndex;
-            splitButton.Items = new List<RibbonItemBase>();
-            foreach (var item in Items)
-                splitButton.Items.Add(item.GetRevitRibbon());
-            return splitButton;
+            Properties.Add(new PropertyItem(this, nameof(SelectedIndex), new TextBox(), true, SelectedIndexProperty));
         }
     }
 }

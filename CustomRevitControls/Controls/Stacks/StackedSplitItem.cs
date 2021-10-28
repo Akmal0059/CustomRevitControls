@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Windows.Media;
 using RevitAddinBase;
 using RevitAddinBase.RevitControls;
+using System.Resources;
 
 namespace CustomRevitControls
 {
@@ -71,8 +72,8 @@ namespace CustomRevitControls
         static StackedSplitItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedSplitItem), new FrameworkPropertyMetadata(typeof(StackedSplitItem)));
-            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedSplitItem));
-            SelectedIndexProperty = DependencyProperty.Register("SelectedIndex", typeof(int?), typeof(StackedSplitItem));
+            CalculatedWidthProperty = DependencyProperty.Register(nameof(CalculatedWidth), typeof(double), typeof(StackedSplitItem));
+            SelectedIndexProperty = DependencyProperty.Register(nameof(SelectedIndex), typeof(int?), typeof(StackedSplitItem));
         }
 
         public void CalculateWidth()
@@ -103,21 +104,14 @@ namespace CustomRevitControls
             }
             CalculatedWidth += maxItemWidth;
         }
-
+        protected override void AddSpecificResources(ResXResourceWriter rw)
+        {
+            rw.AddResource($"{CommandName}_SelectedIndex", SelectedIndex);
+        }
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-            Properties.Add(new PropertyItem(this, "SelectedIndex", new TextBox(), true, SelectedIndexProperty));
-        }
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            SplitButton splitButton = new SplitButton();
-            splitButton.Text = (string)Content;
-            splitButton.SelectedIndex = SelectedIndex;
-            splitButton.Items = new List<RibbonItemBase>();
-            foreach (var item in Items)
-                splitButton.Items.Add(item.GetRevitRibbon());
-            return splitButton;
+            Properties.Add(new PropertyItem(this, nameof(SelectedIndex), new TextBox(), true, SelectedIndexProperty));
         }
     }
 }

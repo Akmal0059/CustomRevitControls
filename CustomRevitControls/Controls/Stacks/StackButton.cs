@@ -55,16 +55,7 @@ namespace CustomRevitControls
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-            //Properties.Add(new PropertyItem(this, "Items", new Button(), browseCommand: command));
-        }
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            StackItem stackItem = new StackItem();
-            //pullButton.Text = (string)Content;
-            stackItem.Items = new List<RibbonItemBase>();
-            foreach (var item in Items)
-                stackItem.Items.Add(item.GetRevitRibbon());
-            return stackItem;
+            //Properties.Add(new PropertyItem(this, nameof(Items), new Button(), browseCommand: command));
         }
     }
 }

@@ -50,8 +50,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\Checkbox.cs" />
     <Compile Include="Controls\Interfaces\ISplitItem.cs" />
     <Compile Include="Controls\Separator.cs" />
+    <Compile Include="Controls\Textblock.cs" />
     <Compile Include="DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>

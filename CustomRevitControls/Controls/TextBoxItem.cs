@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Resources;
 
 namespace CustomRevitControls
 {
@@ -62,25 +63,22 @@ namespace CustomRevitControls
         static TextBoxItem()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(TextBoxItem), new FrameworkPropertyMetadata(typeof(TextBoxItem)));
-            TextBoxWidthProperty = DependencyProperty.Register("TextBoxWidth", typeof(double), typeof(TextBoxItem));
-            TextBoxHintProperty = DependencyProperty.Register("TextBoxHint", typeof(string), typeof(TextBoxItem));
+            TextBoxWidthProperty = DependencyProperty.Register(nameof(TextBoxWidth), typeof(double), typeof(TextBoxItem));
+            TextBoxHintProperty = DependencyProperty.Register(nameof(TextBoxHint), typeof(string), typeof(TextBoxItem));
+        }
+
+        protected override void AddSpecificResources(ResXResourceWriter rw)
+        {
+            rw.AddResource($"{CommandName}_Textbox_Width", TextBoxWidth);
+            rw.AddResource($"{CommandName}_Textbox_HintText", TextBoxHint);
         }
 
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command);
-            Properties.Add(new PropertyItem(this, "EnterPressed", new ComboBox(), new List<object>() { "123", "111" }));
-            Properties.Add(new PropertyItem(this, "TextBoxWidth", new TextBox()));
-            Properties.Add(new PropertyItem(this, "TextBoxHint", new TextBox()));
-        }
-
-        public override RevitAddinBase.RevitControls.RibbonItemBase GetRevitRibbon()
-        {
-            RevitAddinBase.RevitControls.Textbox tb = new RevitAddinBase.RevitControls.Textbox();
-            tb.TextboxWidth = TextBoxWidth;
-            tb.IconPath = IconPath;
-            tb.HintText = TextBoxHint;
-            return tb;
+            //Properties.Add(new PropertyItem(this, nameof(EnterPressed), new ComboBox(), new List<object>() { "123", "111" }));
+            Properties.Add(new PropertyItem(this, nameof(TextBoxWidth), new TextBox()));
+            Properties.Add(new PropertyItem(this, nameof(TextBoxHint), new TextBox()));
         }
     }
 }

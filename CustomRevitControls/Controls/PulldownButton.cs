@@ -61,16 +61,5 @@ namespace CustomRevitControls
         {
             SetCommonProperties(command, commands);
         }
-
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            PullButton pullButton = new PullButton();
-            pullButton.Text = (string)Content;
-            pullButton.IconPath = IconPath;
-            pullButton.Items = new List<RibbonItemBase>();
-            foreach (var item in Items)
-                pullButton.Items.Add(item.GetRevitRibbon());
-            return pullButton;
-        }
     }
 }

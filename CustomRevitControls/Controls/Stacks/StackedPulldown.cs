@@ -59,7 +59,7 @@ namespace CustomRevitControls
         static StackedPulldown()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedPulldown), new FrameworkPropertyMetadata(typeof(StackedPulldown)));
-            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedPulldown));
+            CalculatedWidthProperty = DependencyProperty.Register(nameof(CalculatedWidth), typeof(double), typeof(StackedPulldown));
         }
 
         public void CalculateWidth()
@@ -77,17 +77,6 @@ namespace CustomRevitControls
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-        }
-
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            PullButton pullButton = new PullButton();
-            pullButton.Text = (string)Content;
-            pullButton.IconPath = IconPath;
-            pullButton.Items = new List<RibbonItemBase>();
-            foreach (var item in Items)
-                pullButton.Items.Add(item.GetRevitRibbon());
-            return pullButton;
         }
     }
 }

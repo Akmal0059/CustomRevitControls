@@ -57,20 +57,11 @@ namespace CustomRevitControls
         static RegularButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RegularButton), new FrameworkPropertyMetadata(typeof(RegularButton)));
-            CommandHandlerProperty = DependencyProperty.Register("CommandHandler", typeof(string), typeof(RegularButton));
+            CommandHandlerProperty = DependencyProperty.Register(nameof(CommandHandler), typeof(string), typeof(RegularButton));
         }
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-        }
-
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            PushButton pb = new PushButton();
-            pb.Text = (string)Content;
-            pb.IconPath = IconPath;
-
-            return pb;
         }
     }
 }

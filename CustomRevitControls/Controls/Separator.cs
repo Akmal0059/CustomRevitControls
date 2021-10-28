@@ -52,10 +52,5 @@ namespace CustomRevitControls
         {
             //SetCommonProperties(command, commands);
         }
-
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            return new RevitAddinBase.RevitControls.Separator();
-        }
     }
 }

@@ -58,7 +58,7 @@ namespace CustomRevitControls
         static StackedRegularButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedRegularButton), new FrameworkPropertyMetadata(typeof(StackedRegularButton)));
-            CalculatedWidthProperty = DependencyProperty.Register("CalculatedWidth", typeof(double), typeof(StackedRegularButton));
+            CalculatedWidthProperty = DependencyProperty.Register(nameof(CalculatedWidth), typeof(double), typeof(StackedRegularButton));
         }
 
         public void CalculateWidth()
@@ -76,15 +76,6 @@ namespace CustomRevitControls
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
-        }
-
-        public override RibbonItemBase GetRevitRibbon()
-        {
-            PushButton pushButton = new PushButton();
-            pushButton.Text = (string)Content;
-            pushButton.IconPath = IconPath;
-            
-            return pushButton;
         }
     }
 }
