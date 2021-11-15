@@ -94,5 +94,11 @@ namespace CustomRevitControls
             comboBox.ItemsSource = itemsSource;
             WpfControl = comboBox;
         }
+        public PropertyItem(RevitControl rControl, string name, CheckBox checkBox)
+        {
+            BaseInit(rControl, name);
+            checkBox.SetBinding(CheckBox.IsCheckedProperty, new Binding($"RevitControl.{name}"));
+            WpfControl = checkBox;
+        }
     }
 }

@@ -23,10 +23,10 @@ namespace CustomRevitControls
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 revitControl.IconPath = dialog.FileName;
-                revitControl.Icon = GetImageSource(dialog.FileName);
+                revitControl.Icon = GetBitmapSource(dialog.FileName);
             }
         }
-        ImageSource GetImageSource(string path)
+        BitmapSource GetBitmapSource(string path)
         {
             var bitmap = new Bitmap(path);
             var imageSource = new BitmapImage();

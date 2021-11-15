@@ -57,7 +57,7 @@ namespace CustomRevitControls.Commands
             ui.Left = p.X;
             ui.Top = p.Y + btn.ActualHeight + 2;
             ui.Height = 42 * items.Count();
-            ui.Width = maxWidth;
+            ui.Width = 36 + maxWidth;
             ui.Show();
         }
     }

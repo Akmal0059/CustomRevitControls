@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -26,9 +28,11 @@ namespace CustomRevitControls
         public static DependencyProperty LongDescriptionProperty;
         public static DependencyProperty ShortDescriptionProperty;
         public static DependencyProperty ItemsProperty;
+        public static DependencyProperty IsSlideOutProperty;
         public static DependencyProperty IconProperty;
-        public static DependencyProperty DecriptionIconPathProperty;
         public static DependencyProperty IconPathProperty;
+        public static DependencyProperty DecriptionIconProperty;
+        public static DependencyProperty DecriptionIconPathProperty;
         public static DependencyProperty CommandNameProperty;
         public static DependencyProperty ContextualHelpProperty;
         public static DependencyProperty AvailabilityClassNameProperty;
@@ -45,6 +49,11 @@ namespace CustomRevitControls
         {
             get { return base.GetValue(ContentProperty); }
             set { base.SetValue(ContentProperty, value); }
+        }
+        public bool IsSlideOut
+        {
+            get { return (bool)base.GetValue(IsSlideOutProperty); }
+            set { base.SetValue(IsSlideOutProperty, value); }
         }
         public string LongDescription
         {
@@ -86,21 +95,21 @@ namespace CustomRevitControls
                 OnPropertyChanged("DescriptionIconPath");
             }
         }
-        public ImageSource Icon
+        public BitmapSource Icon
         {
-            get => (ImageSource)base.GetValue(IconProperty);
+            get => (BitmapSource)base.GetValue(IconProperty);
             set
             {
                 base.SetValue(IconProperty, value);
                 OnPropertyChanged("Icon");
             }
         }
-        public ImageSource DescriptionIcon
+        public BitmapSource DescriptionIcon
         {
-            get => (ImageSource)base.GetValue(DecriptionIconPathProperty);
+            get => (BitmapSource)base.GetValue(DecriptionIconProperty);
             set
             {
-                base.SetValue(DecriptionIconPathProperty, value);
+                base.SetValue(DecriptionIconProperty, value);
                 OnPropertyChanged("DescriptionIcon");
             }
         }
@@ -123,8 +132,10 @@ namespace CustomRevitControls
             LongDescriptionProperty = DependencyProperty.Register(nameof(LongDescription), typeof(string), typeof(RevitControl));
             ShortDescriptionProperty = DependencyProperty.Register(nameof(ShortDescription), typeof(string), typeof(RevitControl));
             ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(List<RevitControl>), typeof(RevitControl));
-            IconProperty = DependencyProperty.Register(nameof(Icon), typeof(ImageSource), typeof(RevitControl));
+            IsSlideOutProperty = DependencyProperty.Register(nameof(IsSlideOut), typeof(bool), typeof(RevitControl));
+            IconProperty = DependencyProperty.Register(nameof(Icon), typeof(BitmapSource), typeof(RevitControl));
             IconPathProperty = DependencyProperty.Register(nameof(IconPath), typeof(string), typeof(RevitControl));
+            DecriptionIconProperty = DependencyProperty.Register(nameof(DescriptionIcon), typeof(BitmapSource), typeof(RevitControl));
             DecriptionIconPathProperty = DependencyProperty.Register(nameof(DescriptionIconPath), typeof(string), typeof(RevitControl));
             CommandNameProperty = DependencyProperty.Register(nameof(CommandName), typeof(string), typeof(RevitControl));
             ContextualHelpProperty = DependencyProperty.Register(nameof(ContextualHelp), typeof(string), typeof(RevitControl));
@@ -162,7 +173,7 @@ namespace CustomRevitControls
                 foreach (var item in Items)
                     (ribbonItemBase as SplitButton).Items.Add(item.GetRevitRibbon());
             }
-            else if(this is StackedSplitItem stSi)
+            else if (this is StackedSplitItem stSi)
             {
                 ribbonItemBase = new SplitButton();
                 //(ribbonItemBase as SplitButton).Text = (string)Content;
@@ -173,10 +184,10 @@ namespace CustomRevitControls
             }
             else if (this is TextBoxItem tbi)
             {
-                ribbonItemBase = new RevitAddinBase.RevitControls.Textbox();
-                //(ribbonItemBase as RevitAddinBase.RevitControls.Textbox).TextboxWidth = tbi.TextBoxWidth;
-                //(ribbonItemBase as RevitAddinBase.RevitControls.Textbox).IconPath = IconPath;
-                //(ribbonItemBase as RevitAddinBase.RevitControls.Textbox).HintText = tbi.TextBoxHint;
+                ribbonItemBase = new Textbox();
+                (ribbonItemBase as Textbox).TextboxWidth = tbi.TextBoxWidth;
+                (ribbonItemBase as Textbox).IconPath = IconPath;
+                (ribbonItemBase as Textbox).HintText = tbi.TextBoxHint;
             }
             else if (this is StackButton sb)
             {
@@ -184,6 +195,11 @@ namespace CustomRevitControls
                 (ribbonItemBase as StackItem).Items = new List<RibbonItemBase>();
                 foreach (var item in Items)
                     (ribbonItemBase as StackItem).Items.Add(item.GetRevitRibbon());
+            }
+            else if (this is Textblock tb)
+            {
+                ribbonItemBase = new RevitAddinBase.RevitControls.Label();
+                (ribbonItemBase as RevitAddinBase.RevitControls.Label).Text = tb.Content.ToString();
             }
 
             ribbonItemBase.CommandName = CommandName;
@@ -193,12 +209,14 @@ namespace CustomRevitControls
             ribbonItemBase.AvailabilityClassName = ContextualHelp;
             return ribbonItemBase;
         }
+
         public static RevitControl GetRevitControl(RibbonItemBase ribbonItem, Dictionary<string, object> resources, bool isStacked = false)
         {
             RevitControl revitControl = null;
-            string text = (string)resources[$"{ribbonItem.CommandName}_Button_caption"];
-            Bitmap icon = (Bitmap)resources[$"{ribbonItem.CommandName}_Button_image"];
-            ImageSource imageSource = GetImageSource(icon);
+            string text = (string)GetResx(resources, ribbonItem, "_Button_caption");
+            Bitmap icon = (Bitmap)GetResx(resources, ribbonItem, "_Button_image");
+            BitmapSource imageSource = GetImageSource(icon);
+
             if (ribbonItem is RevitAddinBase.RevitControls.Separator)
             {
                 return new Separator()
@@ -209,9 +227,9 @@ namespace CustomRevitControls
             else if (ribbonItem is Textbox tb)
             {
                 revitControl = new TextBoxItem();
-                (revitControl as TextBoxItem).TextBoxWidth = (double)resources[$"{ribbonItem.CommandName}_Textbox_Width"];//tb.TextboxWidth;
+                (revitControl as TextBoxItem).TextBoxWidth = (double)GetResx(resources, ribbonItem, "_Textbox_Width");//tb.TextboxWidth;
                 (revitControl as TextBoxItem).Icon = imageSource;// tb.IconPath;
-                (revitControl as TextBoxItem).TextBoxHint = (string)resources[$"{ribbonItem.CommandName}_Textbox_HintText"];//tb.HintText;
+                (revitControl as TextBoxItem).TextBoxHint = (string)GetResx(resources, ribbonItem, "_Textbox_HintText");//tb.HintText;
                 //return textbox;
             }
             else if (ribbonItem is SplitButton sb)
@@ -221,7 +239,7 @@ namespace CustomRevitControls
                     revitControl = new SplitItem();
                     (revitControl as SplitItem).Items = sb.Items.Select(x => GetRevitControl(x, resources, true)).ToList();
                     (revitControl as SplitItem).Content = text;//sb.Text;
-                    (revitControl as SplitItem).SelectedIndex = (int)resources[$"{ribbonItem.CommandName}_SelectedIndex"];//sb.SelectedIndex;
+                    (revitControl as SplitItem).SelectedIndex = (int)GetResx(resources, ribbonItem, "_SelectedIndex");//sb.SelectedIndex;
                     //return splitItem;
                 }
                 else
@@ -229,7 +247,7 @@ namespace CustomRevitControls
                     revitControl = new StackedSplitItem();
                     (revitControl as StackedSplitItem).Items = sb.Items.Select(x => GetRevitControl(x, resources, true)).ToList();
                     (revitControl as StackedSplitItem).Content = text;//sb.Text;
-                    (revitControl as StackedSplitItem).SelectedIndex = (int)resources[$"{ribbonItem.CommandName}_SelectedIndex"];//sb.SelectedIndex;
+                    (revitControl as StackedSplitItem).SelectedIndex = (int)GetResx(resources, ribbonItem, "_SelectedIndex");//sb.SelectedIndex;
                     //return stackedSplitItem;
                 }
             }
@@ -275,14 +293,19 @@ namespace CustomRevitControls
                     //return btn;
                 }
             }
+            else if (ribbonItem is RevitAddinBase.RevitControls.Label lebel)
+            {
+                revitControl = new Textblock();
+                (revitControl as Textblock).Content = lebel.Text;
+            }
             else
                 throw new NotImplementedException();
 
             revitControl.CommandName = ribbonItem.CommandName;
-            //revitControl.LongDescription = (string)resources[$"{ribbonItem.CommandName}_Button_long_description"];//ribbonItem.LongDescription;
-            //revitControl.ShortDescription = (string)resources[$"{ribbonItem.CommandName}_Button_tooltip_text"];//ribbonItem.ShortDescription;
-            //revitControl.ContextualHelp = (string)resources[$"{ribbonItem.CommandName}_Help_file_name"];//ribbonItem.ContextualHelp;
-            //revitControl.AvailabilityClassName = (string)resources[$"{ribbonItem.CommandName}_aviability_type"];//ribbonItem.AvailabilityClassName;
+            revitControl.LongDescription = (string)GetResx(resources, ribbonItem, "_Button_long_description");
+            revitControl.ShortDescription = (string)GetResx(resources, ribbonItem, "_Button_tooltip_text");
+            revitControl.ContextualHelp = (string)GetResx(resources, ribbonItem, "_Help_file_name");
+            revitControl.AvailabilityClassName = (string)GetResx(resources, ribbonItem, "_aviability_type");
             return revitControl;
         }
 
@@ -305,6 +328,7 @@ namespace CustomRevitControls
             {
                 Properties.Add(new PropertyItem(this, nameof(Items), new Button(), command: command));
             }
+            Properties.Add(new PropertyItem(this, nameof(IsSlideOut), new CheckBox()));
             Properties.Add(new PropertyItem(this, nameof(CommandName), new TextBox()));
             Properties.Add(new PropertyItem(this, nameof(LongDescription), new TextBox() { AcceptsReturn = true }));
             Properties.Add(new PropertyItem(this, nameof(ShortDescription), new TextBox() { AcceptsReturn = true }));
@@ -329,26 +353,55 @@ namespace CustomRevitControls
             }
             else
             {
+                if (this is PulldownButton || this is StackedPulldown)
+                {
+                    rw.AddResource($"{CommandName}_Button_caption", Content);
+                    rw.AddResource($"{CommandName}_Button_long_description", LongDescription);
+                    rw.AddResource($"{CommandName}_Button_tooltip_text", ShortDescription);
+                    rw.AddResource($"{CommandName}_Help_file_name", ContextualHelp);
+                    rw.AddResource($"{CommandName}_aviability_type", AvailabilityClassName);
+                }
+                else if (this is SplitItem || this is StackedSplitItem)
+                {
+                    rw.AddResource($"{CommandName}_Button_caption", Content);
+                    rw.AddResource($"{CommandName}_SelectedIndex", (this as ISplitItem).SelectedIndex);
+                }
                 foreach (RevitControl rc in Items)
                     rc.AddStringResources(rw);
             }
         }
         public void AddMediaResources(ResXResourceWriter rw)
         {
-            if (!HasElements)
-            {
-                rw.AddResource($"{CommandName}_Button_image", new Bitmap(IconPath));
-                //rw.AddResource($"{CommandName}_Button_tooltip_image", new Bitmap(DescriptionIconPath));
-            }
-            else
+            if (Icon != null)
+                rw.AddResource($"{CommandName}_Button_image", GetBitmap(Icon));
+
+            if (DescriptionIcon != null)
+                rw.AddResource($"{CommandName}_Button_tooltip_image", GetBitmap(DescriptionIcon));
+
+            if (HasElements)
             {
                 foreach (RevitControl rc in Items)
                     rc.AddMediaResources(rw);
             }
         }
 
+        Bitmap GetBitmap(BitmapSource source)
+        {
+            Bitmap bmp = new Bitmap(
+                source.PixelWidth,
+                source.PixelHeight,
+                System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
 
-        protected static ImageSource GetImageSource(string path)
+            BitmapData data = bmp.LockBits(
+              new Rectangle(System.Drawing.Point.Empty, bmp.Size),
+              ImageLockMode.WriteOnly,
+              System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+
+            source.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bmp.UnlockBits(data);
+            return bmp;
+        }
+        protected static BitmapSource GetImageSource(string path)
         {
             if (path == null)
                 return null;
@@ -366,8 +419,11 @@ namespace CustomRevitControls
             }
             return imageSource;
         }
-        protected static ImageSource GetImageSource(Bitmap bitmap)
+        protected static BitmapSource GetImageSource(Bitmap bitmap)
         {
+            if (bitmap == null)
+                return null;
+
             var imageSource = new BitmapImage();
             using (MemoryStream memory = new MemoryStream())
             {
@@ -379,6 +435,14 @@ namespace CustomRevitControls
                 imageSource.EndInit();
             }
             return imageSource;
+        }
+        protected static object GetResx(Dictionary<string, object> resources, RibbonItemBase ribbonItem, string key)
+        {
+            string dictKey = $"{ribbonItem.CommandName}{key}";
+            if (resources.ContainsKey(dictKey))
+                return resources[dictKey];
+            else
+                return null;
         }
         protected void OnPropertyChanged([CallerMemberName] string prop = "")
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));

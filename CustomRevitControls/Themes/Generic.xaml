@@ -553,8 +553,7 @@
                         <Border>
                             <Grid>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="{TemplateBinding TextblockWidth, Converter={StaticResource ChangeValueConverter}}"
-                                               Text="{TemplateBinding TextblockText}" Foreground="Black"
+                                    <TextBlock Text="{TemplateBinding Content}" Foreground="Black"
                                                Height="18" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Grid>

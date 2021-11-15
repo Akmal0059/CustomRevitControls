@@ -50,10 +50,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Checkbox.cs" />
     <Compile Include="Controls\Interfaces\ISplitItem.cs" />
     <Compile Include="Controls\Separator.cs" />
-    <Compile Include="Controls\Textblock.cs" />
+    <Compile Include="Controls\Stacks\Checkbox.cs" />
+    <Compile Include="Controls\Stacks\Textblock.cs" />
+    <Compile Include="Controls\Stacks\TextBoxItem.cs" />
     <Compile Include="DropDown.xaml.cs">
       <DependentUpon>DropDown.xaml</DependentUpon>
     </Compile>
@@ -82,10 +83,11 @@
     <Compile Include="Controls\Stacks\StackedPulldown.cs" />
     <Compile Include="Controls\Stacks\StackedSplitItem.cs" />
     <Compile Include="Controls\Stacks\StackedRegularButton.cs" />
-    <Compile Include="Controls\TextBoxItem.cs" />
     <Compile Include="PropertyItem.cs" />
     <Compile Include="Commands\ResetCommand.cs" />
     <Compile Include="Commands\SelectImageCommand.cs" />
+    <Compile Include="RevitPanel.cs" />
+    <Compile Include="RevitTab.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
