@@ -29,6 +29,7 @@ namespace CustomRevitControls
         public static DependencyProperty ShortDescriptionProperty;
         public static DependencyProperty ItemsProperty;
         public static DependencyProperty IsSlideOutProperty;
+        public static DependencyProperty HideTextProperty;
         public static DependencyProperty IconProperty;
         public static DependencyProperty IconPathProperty;
         public static DependencyProperty DecriptionIconProperty;
@@ -54,6 +55,11 @@ namespace CustomRevitControls
         {
             get { return (bool)base.GetValue(IsSlideOutProperty); }
             set { base.SetValue(IsSlideOutProperty, value); }
+        }
+        public bool HideText
+        {
+            get { return (bool)base.GetValue(HideTextProperty); }
+            set { base.SetValue(HideTextProperty, value); }
         }
         public string LongDescription
         {
@@ -133,6 +139,7 @@ namespace CustomRevitControls
             ShortDescriptionProperty = DependencyProperty.Register(nameof(ShortDescription), typeof(string), typeof(RevitControl));
             ItemsProperty = DependencyProperty.Register(nameof(Items), typeof(List<RevitControl>), typeof(RevitControl));
             IsSlideOutProperty = DependencyProperty.Register(nameof(IsSlideOut), typeof(bool), typeof(RevitControl));
+            HideTextProperty = DependencyProperty.Register(nameof(HideText), typeof(bool), typeof(RevitControl));
             IconProperty = DependencyProperty.Register(nameof(Icon), typeof(BitmapSource), typeof(RevitControl));
             IconPathProperty = DependencyProperty.Register(nameof(IconPath), typeof(string), typeof(RevitControl));
             DecriptionIconProperty = DependencyProperty.Register(nameof(DescriptionIcon), typeof(BitmapSource), typeof(RevitControl));
@@ -203,10 +210,6 @@ namespace CustomRevitControls
             }
 
             ribbonItemBase.CommandName = CommandName;
-            ribbonItemBase.LongDescription = LongDescription;
-            ribbonItemBase.ShortDescription = ShortDescription;
-            ribbonItemBase.ContextualHelp = ContextualHelp;
-            ribbonItemBase.AvailabilityClassName = ContextualHelp;
             return ribbonItemBase;
         }
 
@@ -300,7 +303,7 @@ namespace CustomRevitControls
             }
             else
                 throw new NotImplementedException();
-
+            revitControl.IsSlideOut = ribbonItem.IsSlideOut;
             revitControl.CommandName = ribbonItem.CommandName;
             revitControl.LongDescription = (string)GetResx(resources, ribbonItem, "_Button_long_description");
             revitControl.ShortDescription = (string)GetResx(resources, ribbonItem, "_Button_tooltip_text");

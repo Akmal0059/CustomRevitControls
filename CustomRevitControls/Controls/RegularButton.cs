@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using RevitAddinBase;
 using RevitAddinBase.RevitControls;
+using System.Resources;
 
 namespace CustomRevitControls
 {
@@ -59,9 +60,16 @@ namespace CustomRevitControls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RegularButton), new FrameworkPropertyMetadata(typeof(RegularButton)));
             CommandHandlerProperty = DependencyProperty.Register(nameof(CommandHandler), typeof(string), typeof(RegularButton));
         }
+
+        protected override void AddSpecificResources(ResXResourceWriter rw)
+        {
+            rw.AddResource($"{CommandName}_Hide_text", HideText);
+        }
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
             SetCommonProperties(command, commands);
+            Properties.Add(new PropertyItem(this, nameof(HideText), new CheckBox()));
+
         }
     }
 }
