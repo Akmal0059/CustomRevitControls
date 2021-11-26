@@ -393,15 +393,16 @@ namespace CustomRevitControls
             Bitmap bmp = new Bitmap(
                 source.PixelWidth,
                 source.PixelHeight,
-                System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             BitmapData data = bmp.LockBits(
               new Rectangle(System.Drawing.Point.Empty, bmp.Size),
               ImageLockMode.WriteOnly,
-              System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+              System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             source.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
             bmp.UnlockBits(data);
+
             return bmp;
         }
         protected static BitmapSource GetImageSource(string path)
