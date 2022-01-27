@@ -470,7 +470,64 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <!--#endregion-->
+
+    <Style TargetType="{x:Type local:Combobox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Combobox}">
+                    <Grid Height="25">
+                        <Border Name="border" Grid.RowSpan="2"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                        </Border>
+                        <Border>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox Width="75"
+                                              Foreground="Black"
+                                              Height="18" VerticalAlignment="Center"
+                                              ItemsSource="{TemplateBinding Items}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Content}"
+                                                           Foreground="Black"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:Textblock}">
+        <Setter Property="IsEnabled" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:Textblock}">
+                    <Grid Height="25">
+                        <Border Name="border" Grid.RowSpan="2"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                        </Border>
+                        <Border>
+                            <Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{TemplateBinding Content}" Foreground="Black"
+                                               Height="18" VerticalAlignment="Center"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style TargetType="{x:Type local:TextBoxItem}">
         <Setter Property="Template">
@@ -539,31 +596,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type local:Textblock}">
-        <Setter Property="IsEnabled" Value="False"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:Textblock}">
-                    <Grid Height="25">
-                        <Border Name="border" Grid.RowSpan="2"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}">
-                        </Border>
-                        <Border>
-                            <Grid>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{TemplateBinding Content}" Foreground="Black"
-                                               Height="18" VerticalAlignment="Center"/>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
+    <!--#endregion-->
+
     <Style TargetType="{x:Type local:Checkbox}">
         <Setter Property="Template">
             <Setter.Value>
@@ -598,6 +632,100 @@
                                 Background="#cacaca"
                                 BorderThickness="0">
                         </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:RadioGroup}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:RadioGroup}">
+                    <Grid x:Name="mainGrid" Height="90">
+                        <Border Name="border" Grid.RowSpan="2"
+                                BorderBrush="Gray"
+                                BorderThickness="1">
+                        </Border>
+                        <ListBox ItemsSource="{TemplateBinding Items}" 
+                                 BorderThickness="0"
+                                 Width="{TemplateBinding Width}"
+                                 Background="#eeeeee"
+                                 Height="90">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Height" Value="88"/>
+                                    <Setter Property="Width" Value="60"/>
+                                    <Setter Property="Padding" Value="0"/>
+                                    <Setter Property="IsSelected" Value="{Binding IsChecked, 
+                                        UpdateSourceTrigger=PropertyChanged}"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:ToggleButton}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ToggleButton}">
+                    <Grid Height="86" Width="58">
+                        <Border Name="border" Grid.RowSpan="2"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                        </Border>
+                        <RadioButton x:Name="toggleBtn"
+                                     GroupName="{TemplateBinding GroupName}">
+                            <RadioButton.Style>
+                                <Style TargetType="RadioButton">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="RadioButton">
+                                                <Border x:Name="Btn_Border"
+                                                        Background="Transparent">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsPressed" Value="true">
+                                                        <Setter TargetName="Btn_Border" Property="Background" Value="#bcd8f3"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderBrush" Value="#0160bf"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderThickness" Value="1"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                        <Setter TargetName="Btn_Border" Property="Background" Value="#cdeaf9"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderBrush" Value="#0160bf"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderThickness" Value="1"/>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="Btn_Border" Property="Background" Value="#bcd8f3"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderBrush" Value="#0160bf"/>
+                                                        <Setter TargetName="Btn_Border" Property="BorderThickness" Value="1"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </RadioButton.Style>
+                            <StackPanel Orientation="Vertical">
+                                <Image Source="{TemplateBinding Icon}" 
+                                       Width="40" Height="40"/>
+                                <TextBlock Text="{TemplateBinding Content}"
+                                           HorizontalAlignment="Center"
+                                           TextAlignment="Center"
+                                           Margin="0,5,0,0" FontSize="14"/>
+                            </StackPanel>
+                        </RadioButton>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

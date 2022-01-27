@@ -56,6 +56,12 @@ namespace CustomRevitControls
             get { return (double)base.GetValue(CalculatedWidthProperty); }
             set { base.SetValue(CalculatedWidthProperty, value); }
         }
+
+        public StackedRegularButton(IEnumerable<string> itemsSource)
+        {
+            ItemsSource = itemsSource;
+        }
+
         static StackedRegularButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StackedRegularButton), new FrameworkPropertyMetadata(typeof(StackedRegularButton)));

@@ -24,6 +24,7 @@ namespace CustomRevitControls
     public abstract class RevitControl : Control, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+        #region DependencyProperties
         public static DependencyProperty ContentProperty;
         public static DependencyProperty LongDescriptionProperty;
         public static DependencyProperty ShortDescriptionProperty;
@@ -36,8 +37,10 @@ namespace CustomRevitControls
         public static DependencyProperty DecriptionIconPathProperty;
         public static DependencyProperty CommandNameProperty;
         public static DependencyProperty ContextualHelpProperty;
-        public static DependencyProperty AvailabilityClassNameProperty;
+        public static DependencyProperty AvailabilityClassNameProperty; 
+        #endregion
 
+        #region Properties
         public abstract string ControlName { get; }
         public abstract bool HasElements { get; }
         public bool IsSelected { get; set; }
@@ -119,17 +122,20 @@ namespace CustomRevitControls
                 OnPropertyChanged("DescriptionIcon");
             }
         }
-
         public List<RevitControl> Items
         {
             get { return (List<RevitControl>)base.GetValue(ItemsProperty); }
             set { base.SetValue(ItemsProperty, value); }
         }
         public List<PropertyItem> Properties { get; set; } = new List<PropertyItem>();
+        public IEnumerable<string> ItemsSource { get; set; }
+        #endregion
+
 
         public RevitControl()
         {
             DataContext = new ControlsContext();
+            Items = new List<RevitControl>();
         }
         static RevitControl()
         {
@@ -208,6 +214,24 @@ namespace CustomRevitControls
                 ribbonItemBase = new RevitAddinBase.RevitControls.Label();
                 (ribbonItemBase as RevitAddinBase.RevitControls.Label).Text = tb.Content.ToString();
             }
+            else if (this is Combobox combo)
+            {
+                ribbonItemBase = new RevitAddinBase.RevitControls.ComboBox();
+                foreach (var item in Items)
+                    (ribbonItemBase as RevitAddinBase.RevitControls.ComboBox).Items.Add(item.GetRevitRibbon());
+            }
+            else if (this is ToggleButton toggle)
+            {
+                ribbonItemBase = new RevitAddinBase.RevitControls.ToggleButton();
+            }
+            else if (this is RadioGroup radioGroup)
+            {
+                ribbonItemBase = new RevitAddinBase.RevitControls.RadioGroup();
+                foreach (var item in radioGroup.Items)
+                {
+                    (ribbonItemBase as RevitAddinBase.RevitControls.RadioGroup).Items.Add(item.GetRevitRibbon());
+                }
+            }
 
             ribbonItemBase.CommandName = CommandName;
             return ribbonItemBase;
@@ -242,7 +266,7 @@ namespace CustomRevitControls
                     revitControl = new SplitItem();
                     (revitControl as SplitItem).Items = sb.Items.Select(x => GetRevitControl(x, resources, true)).ToList();
                     (revitControl as SplitItem).Content = text;//sb.Text;
-                    (revitControl as SplitItem).SelectedIndex = (int)GetResx(resources, ribbonItem, "_SelectedIndex");//sb.SelectedIndex;
+                    (revitControl as SplitItem).SelectedIndex = (int?)GetResx(resources, ribbonItem, "_SelectedIndex");//sb.SelectedIndex;
                     //return splitItem;
                 }
                 else
@@ -250,7 +274,7 @@ namespace CustomRevitControls
                     revitControl = new StackedSplitItem();
                     (revitControl as StackedSplitItem).Items = sb.Items.Select(x => GetRevitControl(x, resources, true)).ToList();
                     (revitControl as StackedSplitItem).Content = text;//sb.Text;
-                    (revitControl as StackedSplitItem).SelectedIndex = (int)GetResx(resources, ribbonItem, "_SelectedIndex");//sb.SelectedIndex;
+                    (revitControl as StackedSplitItem).SelectedIndex = (int?)GetResx(resources, ribbonItem, "_SelectedIndex");//sb.SelectedIndex;
                     //return stackedSplitItem;
                 }
             }
@@ -283,23 +307,41 @@ namespace CustomRevitControls
             {
                 if (isStacked)
                 {
-                    revitControl = new StackedRegularButton();
+                    revitControl = new StackedRegularButton(null);
                     (revitControl as StackedRegularButton).Content = text;//pushButton.Text;
                     (revitControl as StackedRegularButton).Icon = imageSource;//pushButton.IconPath;
                     //return stackedBtn;
                 }
                 else
                 {
-                    revitControl = new RegularButton();
+                    revitControl = new RegularButton(null);
                     (revitControl as RegularButton).Content = text;//pushButton.Text;
                     (revitControl as RegularButton).Icon = imageSource;//pushButton.IconPath;
                     //return btn;
                 }
             }
-            else if (ribbonItem is RevitAddinBase.RevitControls.Label lebel)
+            else if (ribbonItem is RevitAddinBase.RevitControls.Label label)
             {
                 revitControl = new Textblock();
-                (revitControl as Textblock).Content = lebel.Text;
+                (revitControl as Textblock).Content = label.Text;
+            }
+            else if (ribbonItem is RevitAddinBase.RevitControls.ComboBox combo)
+            {
+                revitControl = new Combobox(null);
+                (revitControl as Combobox).Items = combo.Items.Select(x => GetRevitControl(x, resources, true)).ToList();
+            }
+            else if (ribbonItem is RevitAddinBase.RevitControls.RadioGroup radio)
+            {
+                revitControl = new RadioGroup();
+                (revitControl as RadioGroup).Items = radio.Items.Select(x => GetRevitControl(x, resources, false)).ToList();
+                (revitControl as RadioGroup).GroupName = radio.GroupName;
+            }
+            else if (ribbonItem is RevitAddinBase.RevitControls.ToggleButton toggle)
+            {
+                revitControl = new ToggleButton();
+                (revitControl as ToggleButton).GroupName = toggle.GroupName;
+                (revitControl as ToggleButton).Content = toggle.Text;
+                (revitControl as ToggleButton).Icon = imageSource;
             }
             else
                 throw new NotImplementedException();
@@ -332,7 +374,7 @@ namespace CustomRevitControls
                 Properties.Add(new PropertyItem(this, nameof(Items), new Button(), command: command));
             }
             Properties.Add(new PropertyItem(this, nameof(IsSlideOut), new CheckBox()));
-            Properties.Add(new PropertyItem(this, nameof(CommandName), new TextBox()));
+            Properties.Add(new PropertyItem(this, nameof(CommandName), new System.Windows.Controls.ComboBox(), ItemsSource));
             Properties.Add(new PropertyItem(this, nameof(LongDescription), new TextBox() { AcceptsReturn = true }));
             Properties.Add(new PropertyItem(this, nameof(ShortDescription), new TextBox() { AcceptsReturn = true }));
             Properties.Add(new PropertyItem(this, nameof(ContextualHelp), new TextBox()));

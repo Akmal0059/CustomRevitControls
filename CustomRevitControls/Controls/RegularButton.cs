@@ -55,6 +55,11 @@ namespace CustomRevitControls
             set { base.SetValue(CommandHandlerProperty, value); }
         }
 
+        public RegularButton(IEnumerable<string> itemsSource)
+        {
+            ItemsSource = itemsSource;
+        }
+
         static RegularButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(RegularButton), new FrameworkPropertyMetadata(typeof(RegularButton)));
