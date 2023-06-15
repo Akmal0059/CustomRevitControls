@@ -237,7 +237,7 @@ namespace CustomRevitControls
             return ribbonItemBase;
         }
 
-        public static RevitControl GetRevitControl(RibbonItemBase ribbonItem, Dictionary<string, object> resources, bool isStacked = false)
+        public static RevitControl GetRevitControl(RibbonItemBase ribbonItem, Dictionary<string, object> resources, bool isStacked = false, IEnumerable<string> commandNames = null)
         {
             RevitControl revitControl = null;
             string text = (string)GetResx(resources, ribbonItem, "_Button_caption");
@@ -307,14 +307,14 @@ namespace CustomRevitControls
             {
                 if (isStacked)
                 {
-                    revitControl = new StackedRegularButton(null);
+                    revitControl = new StackedRegularButton(commandNames);
                     (revitControl as StackedRegularButton).Content = text;//pushButton.Text;
                     (revitControl as StackedRegularButton).Icon = imageSource;//pushButton.IconPath;
                     //return stackedBtn;
                 }
                 else
                 {
-                    revitControl = new RegularButton(null);
+                    revitControl = new RegularButton(commandNames);
                     (revitControl as RegularButton).Content = text;//pushButton.Text;
                     (revitControl as RegularButton).Icon = imageSource;//pushButton.IconPath;
                     //return btn;
@@ -358,6 +358,8 @@ namespace CustomRevitControls
         public abstract void SetProperties(ICommand command = null, List<string> commands = null);
         public void SetCommonProperties(ICommand command = null, List<string> commands = null)
         {
+            if(commands != null)
+                ItemsSource = commands;
             if (!(this is StackButton) && !(this is StackedSplitItem))
             {
                 TextBox multiLineTB = new TextBox();

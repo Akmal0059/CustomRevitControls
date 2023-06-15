@@ -52,7 +52,7 @@ namespace CustomRevitControls
             Panels = new ObservableCollection<RevitPanel>();
         }
 
-        public RevitTab(RibbonTab ribbon, Dictionary<string, object> resDict)
+        public RevitTab(RibbonTab ribbon, Dictionary<string, object> resDict, IEnumerable<string> commandNames)
         {
             Name = ribbon.Name;
             Title = ribbon.Title;
@@ -65,7 +65,7 @@ namespace CustomRevitControls
                 panel.Text = p.Text;
                 foreach (var c in p.Items)
                 {
-                    var revitControl = RevitControl.GetRevitControl(c, resDict);
+                    var revitControl = RevitControl.GetRevitControl(c, resDict, commandNames: commandNames);
 
                     //SetPropeties(revitControl);
                     panel.Controls.Add(revitControl);

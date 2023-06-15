@@ -1,6 +1,7 @@
 ﻿using CustomRevitControls.Commands;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -88,12 +89,14 @@ namespace CustomRevitControls
             button.Command = command;
             WpfControl = button;
         }
-        public PropertyItem(RevitControl rControl, string name, ComboBox comboBox, IEnumerable itemsSource)
+        public PropertyItem(RevitControl rControl, string name, ComboBox comboBox, IEnumerable<string> itemsSource)
         {
             BaseInit(rControl, name);
+            comboBox.SetBinding(ComboBox.TextProperty, new Binding($"RevitControl.{name}"));
             comboBox.ItemsSource = itemsSource;
+            comboBox.IsEditable = true;
             WpfControl = comboBox;
-            comboBox.SetBinding(ComboBox.SelectedItemProperty, new Binding($"RevitControl.{name}"));
+
         }
         public PropertyItem(RevitControl rControl, string name, CheckBox checkBox)
         {
