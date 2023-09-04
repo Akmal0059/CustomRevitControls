@@ -33,11 +33,13 @@ namespace CustomRevitControls
         public static DependencyProperty HideTextProperty;
         public static DependencyProperty IconProperty;
         public static DependencyProperty IconPathProperty;
-        public static DependencyProperty DecriptionIconProperty;
-        public static DependencyProperty DecriptionIconPathProperty;
+        public static DependencyProperty TooltipImageProperty;
+        public static DependencyProperty TooltipImagePathProperty;
+        public static DependencyProperty TooltipVideoProperty;
+        public static DependencyProperty TooltipVideoPathProperty;
         public static DependencyProperty CommandNameProperty;
         public static DependencyProperty ContextualHelpProperty;
-        public static DependencyProperty AvailabilityClassNameProperty; 
+        public static DependencyProperty AvailabilityClassNameProperty;
         #endregion
 
         #region Properties
@@ -94,16 +96,6 @@ namespace CustomRevitControls
                 OnPropertyChanged("IconPath");
             }
         }
-        public string DescriptionIconPath
-        {
-            get => (string)base.GetValue(DecriptionIconPathProperty);
-            set
-            {
-                base.SetValue(DecriptionIconPathProperty, value);
-                DescriptionIcon = GetImageSource(value);
-                OnPropertyChanged("DescriptionIconPath");
-            }
-        }
         public BitmapSource Icon
         {
             get => (BitmapSource)base.GetValue(IconProperty);
@@ -113,13 +105,42 @@ namespace CustomRevitControls
                 OnPropertyChanged("Icon");
             }
         }
-        public BitmapSource DescriptionIcon
+        public BitmapSource TooltipImage
         {
-            get => (BitmapSource)base.GetValue(DecriptionIconProperty);
+            get => (BitmapSource)base.GetValue(TooltipImageProperty);
             set
             {
-                base.SetValue(DecriptionIconProperty, value);
-                OnPropertyChanged("DescriptionIcon");
+                base.SetValue(TooltipImageProperty, value);
+                OnPropertyChanged("TooltipImage");
+            }
+        }
+        public string TooltipImagePath
+        {
+            get => (string)base.GetValue(TooltipImagePathProperty);
+            set
+            {
+                base.SetValue(TooltipImagePathProperty, value);
+                TooltipImage = GetImageSource(value);
+                OnPropertyChanged("TooltipImagePath");
+            }
+        }
+        public byte[] TooltipVideo
+        {
+            get => (byte[])base.GetValue(TooltipVideoProperty);
+            set
+            {
+                base.SetValue(TooltipVideoProperty, value);
+                OnPropertyChanged("TooltipVideo");
+            }
+        }
+        public string TooltipVideoPath
+        {
+            get => (string)base.GetValue(TooltipVideoPathProperty);
+            set
+            {
+                base.SetValue(TooltipVideoPathProperty, value);
+                TooltipVideo = GetByteArray(value);
+                OnPropertyChanged("TooltipVideoPath");
             }
         }
         public List<RevitControl> Items
@@ -148,8 +169,10 @@ namespace CustomRevitControls
             HideTextProperty = DependencyProperty.Register(nameof(HideText), typeof(bool), typeof(RevitControl));
             IconProperty = DependencyProperty.Register(nameof(Icon), typeof(BitmapSource), typeof(RevitControl));
             IconPathProperty = DependencyProperty.Register(nameof(IconPath), typeof(string), typeof(RevitControl));
-            DecriptionIconProperty = DependencyProperty.Register(nameof(DescriptionIcon), typeof(BitmapSource), typeof(RevitControl));
-            DecriptionIconPathProperty = DependencyProperty.Register(nameof(DescriptionIconPath), typeof(string), typeof(RevitControl));
+            TooltipImageProperty = DependencyProperty.Register(nameof(TooltipImage), typeof(BitmapSource), typeof(RevitControl));
+            TooltipImagePathProperty = DependencyProperty.Register(nameof(TooltipImagePath), typeof(string), typeof(RevitControl));
+            TooltipVideoProperty = DependencyProperty.Register(nameof(TooltipVideo), typeof(byte[]), typeof(RevitControl));
+            TooltipVideoPathProperty = DependencyProperty.Register(nameof(TooltipVideoPath), typeof(string), typeof(RevitControl));
             CommandNameProperty = DependencyProperty.Register(nameof(CommandName), typeof(string), typeof(RevitControl));
             ContextualHelpProperty = DependencyProperty.Register(nameof(ContextualHelp), typeof(string), typeof(RevitControl));
             AvailabilityClassNameProperty = DependencyProperty.Register(nameof(AvailabilityClassName), typeof(string), typeof(RevitControl));
@@ -358,7 +381,7 @@ namespace CustomRevitControls
         public abstract void SetProperties(ICommand command = null, List<string> commands = null);
         public void SetCommonProperties(ICommand command = null, List<string> commands = null)
         {
-            if(commands != null)
+            if (commands != null)
                 ItemsSource = commands;
             if (!(this is StackButton) && !(this is StackedSplitItem))
             {
@@ -379,6 +402,8 @@ namespace CustomRevitControls
             Properties.Add(new PropertyItem(this, nameof(CommandName), new System.Windows.Controls.ComboBox(), ItemsSource));
             Properties.Add(new PropertyItem(this, nameof(LongDescription), new TextBox() { AcceptsReturn = true }));
             Properties.Add(new PropertyItem(this, nameof(ShortDescription), new TextBox() { AcceptsReturn = true }));
+            Properties.Add(new PropertyItem(this, nameof(TooltipImage), new TextBox(), new Button()));
+            Properties.Add(new PropertyItem(this, nameof(TooltipVideo), new TextBox(), new Button()));
             Properties.Add(new PropertyItem(this, nameof(ContextualHelp), new TextBox()));
             Properties.Add(new PropertyItem(this, nameof(AvailabilityClassName), new TextBox()));
         }
@@ -422,8 +447,11 @@ namespace CustomRevitControls
             if (Icon != null)
                 rw.AddResource($"{CommandName}_Button_image", GetBitmap(Icon));
 
-            if (DescriptionIcon != null)
-                rw.AddResource($"{CommandName}_Button_tooltip_image", GetBitmap(DescriptionIcon));
+            if (TooltipImage != null)
+                rw.AddResource($"{CommandName}_Button_tooltip_image", GetBitmap(TooltipImage));
+
+            if (TooltipVideo != null || TooltipVideo.Length != 0)
+                rw.AddResource($"{CommandName}_Button_tooltip_video", TooltipVideo);
 
             if (HasElements)
             {
@@ -448,6 +476,16 @@ namespace CustomRevitControls
             bmp.UnlockBits(data);
 
             return bmp;
+        }
+        protected static byte[] GetByteArray(string path)
+        {
+            if (path == null)
+                return null;
+
+            if(!File.Exists(path))
+                return null;
+
+            return File.ReadAllBytes(path);
         }
         protected static BitmapSource GetImageSource(string path)
         {
