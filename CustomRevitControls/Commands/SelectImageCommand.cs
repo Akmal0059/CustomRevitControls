@@ -24,8 +24,12 @@ namespace CustomRevitControls
         public void Execute(object parameter)
         {
             System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            if (propName == nameof(revitControl.IconPath))
+            if (propName == nameof(revitControl.IconPath) ||
+                propName == nameof(revitControl.TooltipImagePath))
                 dialog.Filter = "Image (*.png)|*.png";
+            else if (propName == nameof(revitControl.TooltipVideoPath))
+                dialog.Filter = "Video (*.mp4)|*.mp4";
+
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 if (propName == nameof(revitControl.IconPath))
