@@ -10,7 +10,12 @@ namespace CustomRevitControls
     public class SelectImageCommand : ICommand
     {
         private RevitControl revitControl;
-        public SelectImageCommand(RevitControl rc) => revitControl = rc;
+        private string propName;
+        public SelectImageCommand(RevitControl rc, string propertyName)
+        {
+            revitControl = rc;
+            propName = propertyName;
+        }
 
         public event EventHandler CanExecuteChanged;
 
@@ -19,11 +24,16 @@ namespace CustomRevitControls
         public void Execute(object parameter)
         {
             System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.Filter = "Image (*.png)|*.png";
+            if (propName == nameof(revitControl.IconPath))
+                dialog.Filter = "Image (*.png)|*.png";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                revitControl.IconPath = dialog.FileName;
-                revitControl.Icon = GetBitmapSource(dialog.FileName);
+                if (propName == nameof(revitControl.IconPath))
+                    revitControl.IconPath = dialog.FileName;
+                else if (propName == nameof(revitControl.TooltipImagePath))
+                    revitControl.TooltipImagePath = dialog.FileName;
+                else if (propName == nameof(revitControl.TooltipVideoPath))
+                    revitControl.TooltipVideoPath = dialog.FileName;
             }
         }
         BitmapSource GetBitmapSource(string path)

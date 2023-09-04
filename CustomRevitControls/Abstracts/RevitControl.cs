@@ -402,8 +402,8 @@ namespace CustomRevitControls
             Properties.Add(new PropertyItem(this, nameof(CommandName), new System.Windows.Controls.ComboBox(), ItemsSource));
             Properties.Add(new PropertyItem(this, nameof(LongDescription), new TextBox() { AcceptsReturn = true }));
             Properties.Add(new PropertyItem(this, nameof(ShortDescription), new TextBox() { AcceptsReturn = true }));
-            Properties.Add(new PropertyItem(this, nameof(TooltipImage), new TextBox(), new Button()));
-            Properties.Add(new PropertyItem(this, nameof(TooltipVideo), new TextBox(), new Button()));
+            Properties.Add(new PropertyItem(this, nameof(TooltipImagePath), new TextBox(), new Button()));
+            Properties.Add(new PropertyItem(this, nameof(TooltipVideoPath), new TextBox(), new Button()));
             Properties.Add(new PropertyItem(this, nameof(ContextualHelp), new TextBox()));
             Properties.Add(new PropertyItem(this, nameof(AvailabilityClassName), new TextBox()));
         }
@@ -450,7 +450,7 @@ namespace CustomRevitControls
             if (TooltipImage != null)
                 rw.AddResource($"{CommandName}_Button_tooltip_image", GetBitmap(TooltipImage));
 
-            if (TooltipVideo != null || TooltipVideo.Length != 0)
+            if (TooltipVideo != null && TooltipVideo.Length != 0)
                 rw.AddResource($"{CommandName}_Button_tooltip_video", TooltipVideo);
 
             if (HasElements)

@@ -73,7 +73,7 @@ namespace CustomRevitControls
             browseButton.Width = 30;
             browseButton.HorizontalAlignment = HorizontalAlignment.Right;
             browseButton.Content = ". . .";
-            browseButton.Command = new SelectImageCommand(RevitControl);
+            browseButton.Command = new SelectImageCommand(RevitControl, name);
             browseButton.SetValue(Grid.ColumnProperty, 1);
 
             grid.Children.Add(border);
