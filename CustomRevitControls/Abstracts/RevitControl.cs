@@ -392,18 +392,20 @@ namespace CustomRevitControls
             }
             if (!(this is StackButton) && !(this is ISplitItem))
             {
-                Properties.Add(new PropertyItem(this, nameof(IconPath), new TextBox(), new Button()));
+                Properties.Add(new PropertyItem(this, nameof(IconPath), nameof(Icon), new TextBox(), new Button()));
             }
             if (HasElements)
             {
                 Properties.Add(new PropertyItem(this, nameof(Items), new Button(), command: command));
+                Properties.Add(new PropertyItem(this, nameof(CommandName), new TextBox()));
             }
+            else
+                Properties.Add(new PropertyItem(this, nameof(CommandName), new System.Windows.Controls.ComboBox(), ItemsSource));
             Properties.Add(new PropertyItem(this, nameof(IsSlideOut), new CheckBox()));
-            Properties.Add(new PropertyItem(this, nameof(CommandName), new System.Windows.Controls.ComboBox(), ItemsSource));
             Properties.Add(new PropertyItem(this, nameof(LongDescription), new TextBox() { AcceptsReturn = true }));
             Properties.Add(new PropertyItem(this, nameof(ShortDescription), new TextBox() { AcceptsReturn = true }));
-            Properties.Add(new PropertyItem(this, nameof(TooltipImagePath), new TextBox(), new Button()));
-            Properties.Add(new PropertyItem(this, nameof(TooltipVideoPath), new TextBox(), new Button()));
+            Properties.Add(new PropertyItem(this, nameof(TooltipImagePath), nameof(TooltipImage), new TextBox(), new Button()));
+            Properties.Add(new PropertyItem(this, nameof(TooltipVideoPath), nameof(TooltipVideo), new TextBox(), new Button()));
             Properties.Add(new PropertyItem(this, nameof(ContextualHelp), new TextBox()));
             Properties.Add(new PropertyItem(this, nameof(AvailabilityClassName), new TextBox()));
         }

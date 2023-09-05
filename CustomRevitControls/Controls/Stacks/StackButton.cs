@@ -54,7 +54,10 @@ namespace CustomRevitControls
 
         public override void SetProperties(ICommand command = null, List<string> commands = null)
         {
-            SetCommonProperties(command, commands);
+            Properties.Add(new PropertyItem(this, nameof(Items), new Button(), command: command));
+            Properties.Add(new PropertyItem(this, nameof(IsSlideOut), new CheckBox()));
+            Properties.Add(new PropertyItem(this, nameof(CommandName), new TextBox()));
+            //SetCommonProperties(command, commands);
             //Properties.Add(new PropertyItem(this, nameof(Items), new Button(), browseCommand: command));
         }
     }

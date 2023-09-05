@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace CustomRevitControls
 {
@@ -55,27 +56,47 @@ namespace CustomRevitControls
                 WpfControl = grid;
             }
         }
-        public PropertyItem(RevitControl rControl, string name, TextBox textBox, Button browseButton)
+
+        // ctor for media
+        public PropertyItem(RevitControl rControl, string name, string mediaSource, TextBox textBox, Button browseButton)
         {
             BaseInit(rControl, name);
             textBox.SetBinding(TextBox.TextProperty, new Binding($"RevitControl.{name}"));
             Grid grid = new Grid();
+            grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(25) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(30) });
+
+
+            Image image = new Image();
+            image.SetBinding(Image.SourceProperty, new Binding($"RevitControl.{mediaSource}"));
+            image.Margin = new Thickness(1, 1, 1, 1);
+            image.SetValue(Grid.ColumnProperty, 0);
+            Grid tooltipGrid = new Grid();
+            Image tooltipImage = new Image();
+            tooltipImage.SetBinding(Image.SourceProperty, new Binding($"RevitControl.{mediaSource}"));
+            tooltipGrid.Children.Add(tooltipImage);
+            image.ToolTip = tooltipGrid;
+            Border imageBorder = new Border();
+            imageBorder.Child = image;
+            imageBorder.Background = new SolidColorBrush(Color.FromRgb(238, 238, 238));
+            imageBorder.Margin = new Thickness(0, 0, 1, 0);
+
 
             textBox.Margin = new Thickness(0, 0, 2, 0);
             textBox.HorizontalAlignment = HorizontalAlignment.Stretch;
             //textBox.SetValue(Grid.ColumnProperty, 0);
             Border border = new Border();
             border.Child = textBox;
-            border.SetValue(Grid.ColumnProperty, 0);
+            border.SetValue(Grid.ColumnProperty, 1);
 
             browseButton.Width = 30;
             browseButton.HorizontalAlignment = HorizontalAlignment.Right;
             browseButton.Content = ". . .";
             browseButton.Command = new SelectImageCommand(RevitControl, name);
-            browseButton.SetValue(Grid.ColumnProperty, 1);
+            browseButton.SetValue(Grid.ColumnProperty, 2);
 
+            grid.Children.Add(imageBorder);
             grid.Children.Add(border);
             grid.Children.Add(browseButton);
             WpfControl = grid;
